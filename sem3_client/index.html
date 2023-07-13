@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customer List</title>
+</head>
+<body>
+  <h1>Customer List</h1>
+  <table id="customerTable">
+    <thead>
+      <tr>
+        <th>Customer ID</th>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Last Name</th>
+        <th>Gender</th>
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Type Customer</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Flag</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    // Function to fetch and display customer data
+    async function getCustomers() {
+      try {
+        const response = await fetch('https://localhost:7252/api/Customer/all'); // Replace with your actual API endpoint URL
+        if (response.ok) {
+          const customers = await response.json();
+          console.log(customers);
+          const tableBody = document.getElementById('customerTable').getElementsByTagName('tbody')[0];
+          console.log(tableBody);
+          customers.forEach((customer) => {
+            const row = tableBody.insertRow();
+            
+            row.insertCell(0).textContent = customer.customerId;
+            row.insertCell(1).textContent = customer.firstName;
+            row.insertCell(2).textContent = customer.middleName;
+            row.insertCell(3).textContent = customer.lastName;
+            row.insertCell(4).textContent = customer.gender;
+            row.insertCell(5).textContent = customer.phoneNumber;
+            row.insertCell(6).textContent = customer.email;
+            row.insertCell(7).textContent = customer.address;
+            row.insertCell(8).textContent = customer.typeCustomer;
+            row.insertCell(9).textContent = customer.cLoginName;
+            row.insertCell(10).textContent = customer.password;
+            row.insertCell(11).textContent = customer.flag;
+          });
+        } else {
+          throw new Error('Network response was not OK.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    // Call the function to retrieve and display the customer data
+    getCustomers();
+  </script>
+</body>
+</html>
