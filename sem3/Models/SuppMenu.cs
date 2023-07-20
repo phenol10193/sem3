@@ -7,6 +7,6 @@
         public float Price { get; set; }
         public int CategoryId { get; set; }
         public int SupplierId { get; set; }
-        public bool Flag {get; set; }
+        public bool Flag { get; set; }
     }
 }

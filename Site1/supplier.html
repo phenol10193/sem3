@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <title>Supplier</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Supplier List</h1>
+
+            <div class="row" id="supplierList">
+                <!-- Supplier cards will be dynamically generated here -->
+            </div>
+        </div>
+
+        <script src="https://kit.fontawesome.com/xxxxxxxxxx.js" crossorigin="anonymous"></script>
+        <script>
+            // Sample data for demonstration
+            var suppliers = [
+                {
+                    id: 1,
+                    name: "Supplier 1",
+                    image: "supplier1.jpg",
+                    rooms: [
+                        { id: 1, name: "Room 1" },
+                        { id: 2, name: "Room 2" },
+                        { id: 3, name: "Room 3" }
+                    ],
+                    menus: [
+                        { id: 1, name: "Menu 1", price: 10 },
+                        { id: 2, name: "Menu 2", price: 15 },
+                        { id: 3, name: "Menu 3", price: 12 }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Supplier 2",
+                    image: "supplier2.jpg",
+                    rooms: [
+                        { id: 4, name: "Room 4" },
+                        { id: 5, name: "Room 5" },
+                        { id: 6, name: "Room 6" }
+                    ],
+                    menus: [
+                        { id: 4, name: "Menu 4", price: 20 },
+                        { id: 5, name: "Menu 5", price: 18 },
+                        { id: 6, name: "Menu 6", price: 16 }
+                    ]
+                }
+            ];
+
+            // Function to generate supplier cards
+            function generateSupplierCards() {
+                var supplierList = document.getElementById("supplierList");
+                supplierList.innerHTML = "";
+
+                suppliers.forEach(function (supplier) {
+                    var supplierCard = document.createElement("div");
+                    supplierCard.classList.add("col-md-4");
+
+                    var supplierBox = document.createElement("div");
+                    supplierBox.classList.add("supplier-box");
+
+                    var supplierName = document.createElement("div");
+                    supplierName.classList.add("supplier-name");
+                    supplierName.textContent = supplier.name;
+
+                    var supplierImage = document.createElement("img");
+                    supplierImage.src = supplier.image;
+                    supplierImage.alt = supplier.name;
+                    supplierImage.classList.add("supplier-image");
+
+                    var roomsButton = document.createElement("button");
+                    roomsButton.classList.add("btn", "btn-primary", "btn-sm");
+                    roomsButton.textContent = "View Rooms";
+                    roomsButton.addEventListener("click", function () {
+                        viewRooms(supplier.id);
+                    });
+
+                    supplierBox.appendChild(supplierName);
+                    supplierBox.appendChild(supplierImage);
+                    supplierBox.appendChild(roomsButton);
+                    supplierCard.appendChild(supplierBox);
+                    supplierList.appendChild(supplierCard);
+                });
+            }
+
+            // Function to view the rooms for a selected supplier
+            function viewRooms(supplierId) {
+                var supplier = suppliers.find(function (supplier) {
+                    return supplier.id === supplierId;
+                });
+
+                if (supplier) {
+                    var roomList = document.getElementById("roomList");
+                    roomList.innerHTML = "";
+
+                    var roomTitle = document.getElementById("roomTitle");
+                    roomTitle.textContent = supplier.name + " - Rooms";
+
+                    supplier.rooms.forEach(function (room) {
+                        var roomCard = document.createElement("div");
+                        roomCard.classList.add("col-md-4");
+
+                        var roomBox = document.createElement("div");
+                        roomBox.classList.add("room-box");
+
+                        var roomName = document.createElement("div");
+                        roomName.classList.add("room-name");
+                        roomName.textContent = room.name;
+
+                        var menusButton = document.createElement("button");
+                        menusButton.classList.add("btn", "btn-primary", "btn-sm");
+                        menusButton.textContent = "View Menus";
+                        menusButton.addEventListener("click", function () {
+                            viewMenus(supplierId, room.id);
+                        });
+
+                        roomBox.appendChild(roomName);
+                        roomBox.appendChild(menusButton);
+                        roomCard.appendChild(roomBox);
+                        roomList.appendChild(roomCard);
+                    });
+
+                    document.getElementById("supplierSection").style.display = "none";
+                    document.getElementById("roomSection").style.display = "block";
+                }
+            }
+
+            // Function to view the menus for a selected room
+            function viewMenus(supplierId, roomId) {
+                var supplier = suppliers.find(function (supplier) {
+                    return supplier.id === supplierId;
+                });
+
+                if (supplier) {
+                    var room = supplier.rooms.find(function (room) {
+                        return room.id === roomId;
+                    });
+
+                    if (room) {
+                        var menuList = document.getElementById("menuList");
+                        menuList.innerHTML = "";
+
+                        var menuTitle = document.getElementById("menuTitle");
+                        menuTitle.textContent = supplier.name + " - " + room.name + " - Menus";
+
+                        room.menus.forEach(function (menu) {
+                            var menuCard = document.createElement("div");
+                            menuCard.classList.add("col-md-4");
+
+                            var menuBox = document.createElement("div");
+                            menuBox.classList.add("menu-box");
+
+                            var menuName = document.createElement("div");
+                            menuName.classList.add("menu-name");
+                            menuName.textContent = menu.name;
+
+                            var price = document.createElement("div");
+                            price.classList.add("menu-price");
+                            price.textContent = "$" + menu.price;
+
+                            menuBox.appendChild(menuName);
+                            menuBox.appendChild(price);
+                            menuCard.appendChild(menuBox);
+                            menuList.appendChild(menuCard);
+                        });
+
+                        document.getElementById("roomSection").style.display = "none";
+                        document.getElementById("menuSection").style.display = "block";
+                    }
+                }
+            }
+
+            // Function to go back to supplier list
+            function goBack() {
+                document.getElementById("roomSection").style.display = "none";
+                document.getElementById("menuSection").style.display = "none";
+                document.getElementById("supplierSection").style.display = "block";
+            }
+
+            // Generate supplier cards on page load
+            generateSupplierCards();
+        </script>
+    </body>
+
+</html>
