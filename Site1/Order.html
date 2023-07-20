@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <title>Order</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Order</h1>
+
+            <!-- Supplier selection -->
+            <div class="form-group">
+                <label for="supplierSelect">Select Supplier:</label>
+                <select class="form-control" id="supplierSelect">
+                    <option value="">Choose Supplier</option>
+                    <!-- Supplier options will be populated dynamically -->
+                </select>
+            </div>
+
+            <!-- Room selection -->
+            <div class="form-group">
+                <label for="roomSelect">Select Room:</label>
+                <select class="form-control" id="roomSelect">
+                    <option value="">Choose Room</option>
+                    <!-- Room options will be populated dynamically based on the selected supplier -->
+                </select>
+            </div>
+
+            <!-- Menu selection -->
+            <h3>Menu Selection:</h3>
+            <div id="menuSelection">
+                <!-- Menu options will be dynamically generated based on the selected room -->
+            </div>
+
+            <!-- Submit button -->
+            <button class="btn btn-primary" onclick="submitOrder()">Submit Order</button>
+        </div>
+
+        <script src="https://kit.fontawesome.com/xxxxxxxxxx.js" crossorigin="anonymous"></script>
+        <script>
+            // Sample data for demonstration
+            var suppliers = [
+                {
+                    id: 1,
+                    name: "Supplier 1",
+                    rooms: [
+                        { id: 1, name: "Room 1" },
+                        { id: 2, name: "Room 2" },
+                        { id: 3, name: "Room 3" }
+                    ],
+                    menus: [
+                        { id: 1, name: "Menu 1", price: 10 },
+                        { id: 2, name: "Menu 2", price: 15 },
+                        { id: 3, name: "Menu 3", price: 12 }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Supplier 2",
+                    rooms: [
+                        { id: 4, name: "Room 4" },
+                        { id: 5, name: "Room 5" },
+                        { id: 6, name: "Room 6" }
+                    ],
+                    menus: [
+                        { id: 4, name: "Menu 4", price: 20 },
+                        { id: 5, name: "Menu 5", price: 18 },
+                        { id: 6, name: "Menu 6", price: 16 }
+                    ]
+                }
+            ];
+
+            // Function to populate the supplier options
+            function populateSupplierOptions() {
+                var supplierSelect = document.getElementById("supplierSelect");
+                supplierSelect.innerHTML = "";
+
+                suppliers.forEach(function (supplier) {
+                    var option = document.createElement("option");
+                    option.value = supplier.id;
+                    option.textContent = supplier.name;
+                    supplierSelect.appendChild(option);
+                });
+            }
+
+            // Function to populate the room options based on the selected supplier
+            function populateRoomOptions(supplierId) {
+                var roomSelect = document.getElementById("roomSelect");
+                roomSelect.innerHTML = "";
+
+                var supplier = suppliers.find(function (supplier) {
+                    return supplier.id == supplierId;
+                });
+
+                if (supplier) {
+                    supplier.rooms.forEach(function (room) {
+                        var option = document.createElement("option");
+                        option.value = room.id;
+                        option.textContent = room.name;
+                        roomSelect.appendChild(option);
+                    });
+                }
+            }
+
+            // Function to generate menu options based on the selected room
+            function generateMenuOptions(roomId) {
+                var menuSelection = document.getElementById("menuSelection");
+                menuSelection.innerHTML = "";
+
+                var supplierId = document.getElementById("supplierSelect").value;
+                var supplier = suppliers.find(function (supplier) {
+                    return supplier.id == supplierId;
+                });
+
+                if (supplier) {
+                    var room = supplier.rooms.find(function (room) {
+                        return room.id == roomId;
+                    });
+
+                    if (room) {
+                        room.menus.forEach(function (menu) {
+                            var checkbox = document.createElement("input");
+                            checkbox.type = "checkbox";
+                            checkbox.name = "menu";
+                            checkbox.value = menu.id;
+
+                            var label = document.createElement("label");
+                            label.textContent = menu.name + " ($" + menu.price + ")";
+
+                            var br = document.createElement("br");
+
+                            menuSelection.appendChild(checkbox);
+                            menuSelection.appendChild(label);
+                            menuSelection.appendChild(br);
+                        });
+                    }
+                }
+            }
+
+            // Function to submit the order
+            function submitOrder() {
+                var supplierId = document.getElementById("supplierSelect").value;
+                var roomId = document.getElementById("roomSelect").value;
+                var selectedMenus = document.querySelectorAll('input[name="menu"]:checked');
+
+                // Process the selected supplier, room, and menus
+                console.log("Supplier ID:", supplierId);
+                console.log("Room ID:", roomId);
+                console.log("Selected Menus:");
+                selectedMenus.forEach(function (menu) {
+                    console.log("Menu ID:", menu.value);
+                });
+            }
+
+            // Event listener for supplier selection
+            document.getElementById("supplierSelect").addEventListener("change", function () {
+                var supplierId = this.value;
+                populateRoomOptions(supplierId);
+            });
+
+            // Event listener for room selection
+            document.getElementById("roomSelect").addEventListener("change", function () {
+                var roomId = this.value;
+                generateMenuOptions(roomId);
+            });
+
+            // Populate supplier options on page load
+            populateSupplierOptions();
+        </script>
+    </body>
+
+</html>
