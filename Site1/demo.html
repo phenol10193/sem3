@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <style>
+            /* Custom styles go here */
+            /* Header */
+            .header {
+                background-color: #f8f9fa;
+                padding: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .logo img {
+                max-height: 50px;
+            }
+
+            .search-form {
+                display: flex;
+                align-items: center;
+            }
+
+            .search-input {
+                border-radius: 25px;
+                padding: 6px 12px;
+                border: 1px solid #ced4da;
+                transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            }
+
+            .search-input:focus {
+                outline: none;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                border-color: #80bdff;
+            }
+
+            .search-button {
+                background-color: #32bcdf;
+                color: #fff;
+                border: none;
+                border-radius: 25px;
+                padding: 6px 12px;
+                transition: background-color 0.15s ease-in-out;
+            }
+
+            .search-button:hover {
+                background-color: #1aa4df;
+                color: #fff;
+            }
+
+            .nav-link {
+                color: #333333;
+                text-decoration: none;
+                margin-left: 10px;
+                transition: color 0.3s;
+            }
+
+            .nav-link:hover {
+                color: #f10d0d;
+            }
+
+            @media (max-width: 576px) {
+                .logo img {
+                    max-height: 30px;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .navbar-nav {
+                    flex-wrap: nowrap;
+                }
+
+                .navbar-collapse {
+                    flex-basis: 100%;
+                    flex-grow: 0;
+                    align-items: flex-start;
+                }
+
+                .navbar-toggler {
+                    margin-left: auto;
+                    order: -1;
+                }
+            }
+
+
+            /* Grid Container */
+            .grid-container {
+
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                background-image: url('https://heytripster.com/wp-content/uploads/2020/05/Fine-Dinning-in-Istanbul-min-780x470.jpg');
+                gap: 0px;
+            }
+
+            /* Hero Section */
+            .hero-section {
+
+                background-size: cover;
+                background-position: center;
+                padding: 100px 0;
+                text-align: center;
+                color: white;
+            }
+
+            .hero-text {
+                margin-top: 100px;
+                position: absolute;
+                max-width: 50%;
+            }
+
+            .hero-title {
+
+                font-size: 48px;
+
+            }
+
+            .hero-description {
+                padding: 50px;
+                position: relative;
+                font-size: 18px;
+
+            }
+
+            .button:hover {
+                background-color: #15f572;
+                color: #fff;
+            }
+
+            /* Service Section */
+            .service-section {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 100px 0;
+
+            }
+
+
+
+            .service-text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                color: #fff;
+                z-index: 1;
+            }
+
+            .overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+            }
+
+            .service-title {
+
+                margin: 0;
+                position: relative;
+                color: #fff;
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .service-card {
+                flex: 1;
+                position: relative;
+                padding: 20px;
+                border-radius: 10px;
+                text-align: center;
+                transition: background-color 0.3s;
+                margin-top: 10px;
+                background-color: #f8f9fa;
+            }
+
+            .service-card:hover {
+                background-color: #83e755;
+            }
+
+
+
+            .service-image {
+                max-width: 100%;
+                height: 160px;
+                object-fit: cover;
+                transition: transform 0.3s ease;
+            }
+
+            .service-image:hover {
+                transform: scale(1.1);
+            }
+
+            /* Features Section */
+            .features-section {
+                padding: 100px 0;
+                text-align: center;
+            }
+
+            .features-image {
+                max-width: 100%;
+                height: 140px;
+            }
+
+            .feature-card {
+                margin-bottom: 40px;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+            }
+
+            .feature-title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .feature-description {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            .feature-link {
+                font-size: 16px;
+                text-decoration: none;
+                color: #478ac9;
+            }
+
+            .feature-link:hover {
+                text-decoration: underline;
+            }
+
+            /* Introduction Section */
+
+            .introduction-section {
+                border: #ccc solid 1px;
+            }
+
+            .section-title {
+                text-align: center;
+                font-size: 36px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            .section-description {
+                font-size: 14px;
+                text-align: left;
+                margin-bottom: 40px;
+            }
+
+            .button {
+                font-size: 18px;
+                padding: 15px 40px;
+                border-radius: 50px;
+                background-color: #38ee31;
+                color: #fff;
+                text-decoration: none;
+                transition: background-color 0.3s;
+            }
+
+            .img-fluid {
+                height: 100%;
+                width: auto;
+                max-width: 100%;
+            }
+
+            /* Footer */
+            footer {
+                margin-top: 100px;
+                background-color: #040404;
+                color: #fff;
+                padding: 20px 0;
+                text-align: center;
+            }
+
+
+
+            .footer-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+            }
+
+            .column {
+                text-align: left;
+            }
+
+            .footer-cta {
+                margin-top: 20px;
+                order: 2;
+            }
+
+            .footer-social {
+                order: 3;
+                padding: 5%;
+            }
+
+            .footer-social a {
+                display: inline-block;
+                margin-right: 10px;
+                font-size: 20px;
+            }
+
+            .footer-social a i {
+                color: #000;
+            }
+
+            .footer-social a.facebook-icon i {
+                color: #3b5998;
+            }
+
+            .footer-social a.twitter-icon i {
+                color: #1da1f2;
+            }
+
+            .footer-social a.instagram-icon i {
+                color: #e4405f;
+            }
+
+            .footer-social a.linkedin-icon i {
+                color: #0077b5;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <a href="#">
+                    <img src="https://example.com/logo.png" alt="Logo">
+                </a>
+            </div>
+            <div class="search-form">
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2 search-input" type="text" placeholder="Search"
+                        aria-label="Search">
+                    <button class="btn btn-primary my-2 my-sm-0 search-button" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Service</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Grid Container -->
+        <div class="grid-container">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="container">
+                    <h1 class="hero-title">Welcome to Online Catering</h1>
+                    <div class="hero-text">
+                        <div class="overlay"> </div>
+                        <p class="hero-description">Online Catering is an idea of providing online catering services in
+                            some
+                            of the cities It is simple, easy and convenient one stop solution for all catering
+                            requirements
+                            at a single instance on “onlinecatering.in“
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Service Section -->
+            <section class="service-section">
+                <div class="container">
+                    <h1 class="service-title">Our Service</h1>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="service-card">
+                                <img src="https://b3031951.smushcdn.com/3031951/wp-content/uploads/2020/03/LA-430-scaled.jpg"
+                                    alt="Wedding Service" class="service-image">
+
+                                <div class="service-text">
+                                    <div class="overlay"></div>
+                                    <h3 class="service-title">Wedding</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="service-card">
+                                <img src="https://st4.depositphotos.com/2627021/20308/i/600/depositphotos_203086972-stock-photo-birthday-cupcake-one-candle.jpg"
+                                    alt="Birthday Service" class="service-image">
+
+                                <div class="service-text">
+                                    <div class="overlay"></div>
+                                    <h3 class="service-title">Birthday</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="service-card">
+                                <img src="https://i0.wp.com/www.thebigday.co.in/wp-content/uploads/2021/01/Corporate-Events.jpg?fit=1500%2C700&ssl=1"
+                                    alt="Business Event Service" class="service-image">
+
+                                <div class="service-text">
+                                    <div class="overlay"> </div>
+                                    <h3 class="service-title">Business Event</h3>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="service-card">
+                                <img src="https://img.freepik.com/free-photo/people-celebrating-party_53876-14410.jpg"
+                                    alt="Other & Party Service" class="service-image">
+
+                                <div class="service-text">
+                                    <div class="overlay"></div>
+                                    <h3 class="service-title">Other & Party</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="container">
+                <h1>Top Service</h1>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="feature-card">
+                            <h2 class="feature-title">Luxury Room</h2>
+                            <img src="supplier1.jpg" alt="feature 1" class="features-image">
+                            <p class="feature-description">Sample text. Click to select the text box. Click again or
+                                double click to start editing the text.</p>
+                            <a href="#" class="feature-link">Read More</a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-card">
+                            <h2 class="feature-title">Master Chef</h2>
+                            <img src="c2.webp" alt="feature 2" class="features-image">
+                            <p class="feature-description">Sample text. Click to select the text box. Click again or
+                                double click to start editing the text.</p>
+                            <a href="#" class="feature-link">Read More</a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-card">
+                            <h2 class="feature-title">Delicious Food</h2>
+                            <img src="c3.jpg" alt="feature 3" class="features-image">
+                            <p class="feature-description">Sample text. Click to select the text box. Click again or
+                                double click to start editing the text.</p>
+                            <a href="#" class="feature-link">Read More</a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-card">
+                            <h2 class="feature-title">Professional</h2>
+                            <img src="c4.jpg" alt="feature 4" class="features-image">
+                            <p class="feature-description">Sample text. Click to select the text box. Click again or
+                                double click to start editing the text.</p>
+                            <a href="#" class="feature-link">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Introduction Section -->
+        <section class="introduction-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <h2 class="section-title">Introduction</h2>
+                        <p class="section-description"><i class="fas fa-sticky-note"></i>The main rationale behind it,
+                            is to bring all caterers under one
+                            roof i.e. Online Catering for everyone. There are various problems and inconveniences faced
+                            by every individual while making arrangements for special occasions whether it is a
+                            birthday, wedding, anniversary, or corporate events like meetings, inaugural functions,
+                            success celebrations, or college events like freshers parties, farewell parties, college day
+                            celebrations or whatever may be. Onlinecatering make it more convenient and exciting as one
+                            need not take stress of any catering arrangements, all is done at onlinecatering.in
+                            instantly.
+                            Whatever may be ther choice of caterers just a simple click on onlinecaterers.in will do
+                            everything. You need not visit caterers and meet them for those long hours. Just see list of
+                            caterers choose your favourite one and then go for menus, see your favourite dishes and
+                            affordable prices. Then what? Just place order accompanied with details like day, time and
+                            place for delivery of food items and stay relax!!
+                        </p>
+                        <a href="viewlist.html" id="color-button" class="button">Go Now</a>
+                    </div>
+                    <div class="col-md-7">
+                        <img src="introduction.jpg" alt="Introduction Image" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <h1>Follow Us</h1>
+                <div class="footer-content">
+
+                    <div class="footer-info">
+                        <div class="column">
+                            <p><i class="fas fa-map-marker-alt"></i>285 Đội Cấn, Ba Đình, Hà Nội</p>
+                            <p><i class="fas fa-phone"></i> +0987654321</p>
+                            <p><i class="fas fa-envelope"></i> onlinecatere@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="footer-cta">
+                        <h5>Getting Started</h5>
+                        <a href="#" class="footer-button">Login Now</a>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" class="facebook-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="twitter-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="instagram-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="linkedin-icon"><i class="fab fa-linkedin-in"></i></a>
+
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script>
+            var button = document.getElementById('color-button');
+            var colors = ['#ff0000', '#00ff00', '#0000ff'];
+            var currentColorIndex = 0;
+
+            setInterval(changeColor, 1000);
+
+            function changeColor() {
+                var currentColor = colors[currentColorIndex];
+                button.style.backgroundColor = currentColor;
+                currentColorIndex = (currentColorIndex + 1) % colors.length;
+            }
+
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+
+</html>
