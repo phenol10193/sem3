@@ -51,6 +51,8 @@ namespace sem3.Controllers
             }
             return customers;
         }
+       
+        
         [HttpPost("register")]
         public IActionResult RegisterCustomer([FromBody] Customer customer)
         {

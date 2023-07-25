@@ -32,16 +32,18 @@ namespace sem3.Controllers
                                 SuppDetailId = reader.GetInt32(reader.GetOrdinal("SuppInvoiceId")),
                                 SupplierId = reader.GetInt32(reader.GetOrdinal("SupplierId")),
                                 NameDetail = reader.GetString(reader.GetOrdinal("ListRoom")),
-                                PersonInvoice = reader.GetString(reader.GetOrdinal("PersonInvoice")),
+                                NumPeople = reader.GetInt32(reader.GetOrdinal("NumPeople")),
+                                CustomerCost = reader.GetFloat(reader.GetOrdinal("CustomerCost")),
+                                SupplierCost= reader.GetFloat(reader.GetOrdinal("SupplierCost")),
                                 Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
                             };
-                            suppinvoices.Add(suppinvoice);
+                            suppdetails.Add(suppdetail);
                         }
                     }
 
                 }
             }
-            return suppinvoices;
+            return suppdetails;
         }
     }
 }
