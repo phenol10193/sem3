@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\sem3.csproj": {}
+    "E:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\sem3.csproj": {}
   },
   "projects": {
-    "D:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\sem3.csproj": {
+    "E:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\sem3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\sem3.csproj",
+        "projectUniqueName": "E:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\sem3.csproj",
         "projectName": "sem3",
-        "projectPath": "D:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\sem3.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\obj\\",
+        "projectPath": "E:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\sem3.csproj",
+        "packagesPath": "C:\\Users\\welcome\\.nuget\\packages\\",
+        "outputPath": "E:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\welcome\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -72,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }

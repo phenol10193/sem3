@@ -9,9 +9,12 @@ namespace sem3.Controllers
     [ApiController]
     public class SuppInvoiceController : ControllerBase
     {
+        string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
+
         [HttpGet("all")]
         public async Task<IEnumerable<SuppInvoice>> GetSuppInvoices()
         {
+
             var suppinvoices = new List<SuppInvoice>();
             string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
 
@@ -43,6 +46,31 @@ namespace sem3.Controllers
                 }
             }
             return suppinvoices;
+        }
+        [HttpPost("insert")]
+
+        public async Task<IActionResult> InsertSuppInvoice([FromForm] SuppInvoice suppInvoice)
+
+        {
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var commandText = "INSERT INTO SuppInvoice(SupInvoiceDate, SupplierId, ListRoom, PersonInvoice, Flag) VALUES  (@SupInvoiceDate, @SupplierId, @ListRoom, @PersonInvoice, @Flag)";
+
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    command.Parameters.AddWithValue("@SuppInvoiceDate", suppInvoice.SuppInvoiceDate);
+                    command.Parameters.AddWithValue("@SupplierId", suppInvoice.SupplierId);
+                    command.Parameters.AddWithValue("@ListRoom", suppInvoice.ListRoom);
+                    command.Parameters.AddWithValue("@PersonInvoice", suppInvoice.PersonInvoice);
+                    command.Parameters.AddWithValue("@Flag", suppInvoice.Flag);
+                    command.ExecuteNonQuery();
+
+                }
+            }
+            return Ok(suppInvoice);
         }
     }
 }
