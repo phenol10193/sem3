@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <style>
+            /* Custom styles go here */
+            /* Header */
+            .header {
+                background-color: #f8f9fa;
+                padding: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .logo img {
+                max-height: 50px;
+            }
+
+            .search-form {
+                display: flex;
+                align-items: center;
+            }
+
+            .search-input {
+                border-radius: 25px;
+                padding: 6px 12px;
+                border: 1px solid #ced4da;
+                transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            }
+
+            .search-input:focus {
+                outline: none;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                border-color: #80bdff;
+            }
+
+            .search-button {
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 25px;
+                padding: 6px 12px;
+                transition: background-color 0.15s ease-in-out;
+            }
+
+            .search-button:hover {
+                background-color: #0069d9;
+                color: #fff;
+            }
+
+            .nav-link {
+                color: #333333;
+                text-decoration: none;
+                margin-left: 10px;
+                transition: color 0.3s;
+            }
+
+            .nav-link:hover {
+                color: #478ac9;
+            }
+
+            @media (max-width: 576px) {
+                .logo img {
+                    max-height: 30px;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .navbar-nav {
+                    flex-wrap: nowrap;
+                }
+
+                .navbar-collapse {
+                    flex-basis: 100%;
+                    flex-grow: 0;
+                    align-items: flex-start;
+                }
+
+                .navbar-toggler {
+                    margin-left: auto;
+                    order: -1;
+                }
+            }
+
+            /* Hero Section */
+            .hero-section {
+                background-image: url('https://heytripster.com/wp-content/uploads/2020/05/Fine-Dinning-in-Istanbul-min-780x470.jpg');
+                background-size: cover;
+                background-position: center;
+                padding: 100px 0;
+                text-align: center;
+                color: white;
+            }
+
+            .hero-title {
+                font-size: 48px;
+                margin-bottom: 20px;
+            }
+
+            .hero-description {
+                font-size: 18px;
+                margin-bottom: 40px;
+            }
+
+            .hero-button {
+                font-size: 18px;
+                padding: 15px 40px;
+                border-radius: 50px;
+                background-color: #478ac9;
+                color: white;
+                text-decoration: none;
+                transition: background-color 0.3s;
+            }
+
+            .hero-button:hover {
+                background-color: #336699;
+            }
+
+            /* Features Section */
+            .features-section {
+                padding: 100px 0;
+                text-align: center;
+            }
+
+            .feature-card {
+                margin-bottom: 40px;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+            }
+
+            .feature-title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .feature-description {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            .feature-link {
+                font-size: 16px;
+                text-decoration: none;
+                color: #478ac9;
+            }
+
+            .feature-link:hover {
+                text-decoration: underline;
+            }
+
+            /* Introduction Section */
+            .introduction-section {
+                padding: 100px 0;
+            }
+
+            .section-title {
+                font-size: 36px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            .section-description {
+                font-size: 18px;
+                margin-bottom: 40px;
+            }
+
+            .section-image {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* Service Section */
+            .service-section {
+                padding: 100px 0;
+            }
+
+            .service-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            .service-card {
+                background-color: #f8f9fa;
+                padding: 20px;
+                border-radius: 10px;
+                text-align: center;
+                transition: background-color 0.3s;
+            }
+
+            .service-card:hover {
+                background-color: #e9ecef;
+            }
+
+            .service-title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .service-image {
+                max-width: 100%;
+                height: auto;
+                margin-bottom: 10px;
+            }
+
+            /* Footer */
+            .footer {
+                background-color: #f8f9fa;
+                padding: 30px 0;
+                text-align: center;
+            }
+
+            .footer-text {
+                font-size: 14px;
+            }
+
+            .footer-link {
+                text-decoration: none;
+                color: #478ac9;
+            }
+
+            .footer-link:hover {
+                text-decoration: underline;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <a href="#">
+                    <img src="https://example.com/logo.png" alt="Logo">
+                </a>
+            </div>
+            <div class="search-form">
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2 search-input" type="text" placeholder="Search"
+                        aria-label="Search">
+                    <button class="btn btn-primary my-2 my-sm-0 search-button" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Service</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">Welcome to Online Catering</h1>
+                <p class="hero-description">Online Catering is a one-stop solution for all catering requirements.</p>
+                <a href="#" class="hero-button">Learn More</a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="feature-card">
+                            <h2 class="feature-title">Luxury Room</h2>
+                            <p class="feature-description">Sample text. Click to select the text box. Click again or
+                                double click to start editing the text.</p>
+                            <a href="#" class="feature-link">Read More</a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-card">
+                            <h2 class="feature-title">Master Chef</h2>
+                            <p class="feature-description">Sample text. Click to select the text box. Click again or
+                                double click to start editing the text.</p>
+                            <a href="#" class="feature-link">Read More</a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-card">
+                            <h2 class="feature-title">Delicious Food</h2>
+                            <p class="feature-description">Sample text. Click to select the text box. Click again or
+                                double click to start editing the text.</p>
+                            <a href="#" class="feature-link">Read More</a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="feature-card">
+                            <h2 class="feature-title">Professional</h2>
+                            <p class="feature-description">Sample text. Click to select the text box. Click again or
+                                double click to start editing the text.</p>
+                            <a href="#" class="feature-link">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Introduction Section -->
+        <section class="introduction-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="section-title">Introduction</h2>
+                        <p class="section-description">The main rationale b relax!!</p>
+                        <a href="#" class="btn btn-primary">Go Now</a>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="https://i.pinimg.com/originals/fa/41/87/fa4187c794194a055060935e6b7c0577.jpg"
+                            alt="Introduction Image" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Section -->
+        <section class="service-section">
+            <div class="container">
+                <div class="service-grid">
+                    <div class="service-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1EwPdD7U1b9D51k2o3NAsmO8sUEJwIeNMPQ&usqp=CAU"
+                            alt="Wedding Service" class="service-image">
+                        <h3 class="service-title">Wedding</h3>
+                    </div>
+                    <div class="service-card">
+                        <img src="https://st4.depositphotos.com/2627021/20308/i/600/depositphotos_203086972-stock-photo-birthday-cupcake-one-candle.jpg"
+                            alt="Birthday Service" class="service-image">
+                        <h3 class="service-title">Birthday</h3>
+                    </div>
+                    <div class="service-card">
+                        <img src="https://i0.wp.com/www.thebigday.co.in/wp-content/uploads/2021/01/Corporate-Events.jpg?fit=1500%2C700&ssl=1"
+                            alt="Business Event Service" class="service-image">
+                        <h3 class="service-title">Business Event</h3>
+                    </div>
+                    <div class="service-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuYwfnf2vFhh45y8OTJYP1IDoq2z2eDyy3YQ&usqp=CAU"
+                            alt="Other & Party Service" class="service-image">
+                        <h3 class="service-title">Other & Party</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="footer-text">&copy; 2023 Online Catering. All Rights Reserved. | <a href="#"
+                                class="footer-link">Privacy Policy</a> | <a href="#" class="footer-link">Terms of
+                                Service</a> | <a href="#" class="footer-link">Contact</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+
+</html>

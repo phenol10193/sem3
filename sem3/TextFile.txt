@@ -1,0 +1,16 @@
+﻿{
+  "customerId": 2,
+  "firstName": "A",
+  "middleName": "Nguyen",
+  "lastName": "Tran",
+  "birthDate": "2023-07-22",
+  "gender": "male",
+  "phoneNumber": "09999999",
+  "email": "uAar@example.com",
+  "address": "HN",
+  "typeCustomer": "s",
+  "image": "string.jpg",
+  "cLoginName": "admin",
+  "password": "1234454",
+  "flag": true
+}

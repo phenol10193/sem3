@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Profile Page</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <style>
+            body {
+                background-color: #f2f2f2;
+            }
+
+            .container {
+                margin-top: 50px;
+            }
+
+            .card {
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .card-title {
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            .form-group label {
+                font-weight: bold;
+            }
+
+            .form-control {
+                border-radius: 3px;
+            }
+
+            .btn-primary {
+                background-color: #2cccc4;
+                border-color: #2cccc4;
+                width: 100%;
+            }
+
+            .btn-primary:hover {
+                background-color: #00b3b3;
+                border-color: #00b3b3;
+            }
+
+            .btn-danger {
+                margin-top: 10px;
+            }
+
+        </style>
+    </head>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <h2 class="card-title">Profile Page</h2>
+                    <form id="updateProfileForm" onsubmit="updateProfile(event)">
+                        <input type="hidden" id="customer-id" name="customerId" value="1">
+                        <input type="hidden" id="url-image" name="urlImage">
+                        <div class="form-group">
+                            <label for="image">Ảnh đại diện:</label>
+                            <img id="profileImage" alt="Profile Image" style="max-width: 200px;" />
+                            <input type="file" id="image" name="image" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="first-name">Tên:</label>
+                            <input type="text" id="first-name" name="firstName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="middle-name">Họ đệm:</label>
+                            <input type="text" id="middle-name" name="middleName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Họ:</label>
+                            <input type="text" id="last-name" name="lastName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Giới tính:</label>
+                            <select id="gender" name="gender" class="form-control">
+                                <option value="Male">Nam</option>
+                                <option value="Female">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="birth-of-date">Ngày sinh:</label>
+                            <input type="datetime-local" id="birth-of-date" name="birthOfDate" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone-number">Số điện thoại:</label>
+                            <input type="text" id="phone-number" name="phoneNumber" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Địa chỉ:</label>
+                            <input type="text" id="address" name="address" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="type-customer">Loại khách hàng:</label>
+                            <input type="text" id="type-customer" name="typeCustomer" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="clogin-name">LoginName:</label>
+                            <input type="text" id="clogin-name" name="cloginName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <div id="changePasswordGroup" style="display: none;">
+                                <label for="changePassword">New Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password"
+                                        placeholder="Enter your password">
+                                </div>
+                                <label for="supplierConfirmPassword">Confirm Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="supplierConfirmPassword"
+                                        placeholder="Enter your confirm password">
+                                    <span id="passwordMatchStatus"></span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-secondary" id="changePasswordButton"
+                                onclick="showCheckPass()">Change Password</button>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                        <button type="button" class="btn btn-danger" id="deleteProfileButton"
+                            onclick="showCheckPass()">Delete
+                            Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Thêm Modal để nhập lại mật khẩu -->
+    <div id="passwordConfirmationModal" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enter Password to Confirm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label for="confirmPassword">Password:</label>
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Enter your password">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmPasswordButton"
+                        onclick="confirmPassword()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        function checkPasswordsMatch() {
+            var newPassword = $("#password").val();
+            var supplierPassword = $("#supplierConfirmPassword").val();
+
+            if (newPassword === supplierPassword) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function showCheckPass() {
+            $("#passwordConfirmationModal").modal('show');
+        }
+
+        function confirmPassword() {
+            var confirmPassword = $("#confirmPassword").val();
+            var changePassword = $("#password").val();
+
+            if (changePassword === confirmPassword) {
+                $("#passwordConfirmationModal").modal('hide');
+                toggleChangePassword(true);
+            } else {
+                alert('Incorrect password. Please try again.');
+                toggleChangePassword(false);
+            }
+        }
+
+        function toggleChangePassword(show) {
+            var changePassG = $("#changePasswordGroup");
+            if (show) {
+                changePassG.show();
+                $("#changePasswordButton").hide();
+            } else {
+                changePassG.hide();
+                $("#changePasswordButton").text("Change Password");
+            }
+        } $("#password, #confirmPassword").keyup(function () {
+            checkPasswordsMatch();
+        });
+
+
+        $(document).ready(function () {
+            var customerId = 1;
+            getCustomer(customerId);
+            $("#password, #confirmPassword").keyup(function () {
+                checkPasswordsMatch();
+            });
+
+        });
+        function getCustomer(customerId) {
+            // Gọi API để lấy thông tin khách hàng theo CustomerId
+            $.ajax({
+                url: "https://localhost:7252/api/Customer/" + customerId,
+                method: "GET",
+                success: function (response) {
+                    console.log(response);
+                    // Điền thông tin khách hàng vào form
+                    $("#customer-id").val(response.customerId);
+                    $("#first-name").val(response.firstName);
+                    $("#middle-name").val(response.middleName);
+                    $("#last-name").val(response.lastName);
+                    //select gender
+                    if (response.gender === "Male") {
+                        $("#gender").val("Male");
+                    } else if (response.gender === "Female") {
+                        $("#gender").val("Female");
+                    } else {
+                        $("#gender").val("Male");
+                    }
+                    //fomat date 
+                    // const birthDate = new Date(response.birthDate);
+                    // const formattedBirthDate = birthDate.toISOString().slice(0, 10);
+                    $("#birth-of-date").val(response.birthDate);
+
+                    // console.log(formattedBirthDate);
+                    $("#phone-number").val(response.phoneNumber);
+                    $("#email").val(response.email);
+                    $("#address").val(response.address);
+                    $("#type-customer").val(response.typeCustomer);
+                    $("#clogin-name").val(response.cLoginName);
+                    $("#password").val(response.password);
+                    // Set the profile image
+                    if (response.urlImage) {
+                        const imageUrl = "../" + response.urlImage;
+                        $("#profileImage").attr("src", imageUrl);
+                    }
+                    $("#url-image").val(response.urlImage);
+                },
+
+                error: function (xhr, status, error) {
+                    alert("Có lỗi xảy ra khi tải thông tin khách hàng.");
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+        console.log(checkPasswordsMatch());
+        function updateProfile(event) {
+            event.preventDefault();
+            if (!checkPasswordsMatch()) {
+                alert("New Password & Confirm Password are not the same,Please try again!");
+                return;
+            }
+            var customerId = $("#customer-id").val();
+            var firstName = $("#first-name").val();
+            var middleName = $("#middle-name").val();
+            var lastName = $("#last-name").val();
+            var gender = $("#gender").val();
+            var birthOfDate = $("#birth-of-date").val();
+
+            var phoneNumber = $("#phone-number").val();
+            var email = $("#email").val();
+            var address = $("#address").val();
+            var typeCustomer = $("#type-customer").val();
+            var cloginName = $("#clogin-name").val();
+            var password = $("#password").val();
+            var imageFile = $("#image")[0].files[0];
+
+            // Tạo đối tượng FormData để gửi dữ liệu form kèm tệp tải lên
+            var formData = new FormData();
+            formData.append("CustomerId", customerId);
+            formData.append("FirstName", firstName);
+            formData.append("MiddleName", middleName);
+            formData.append("LastName", lastName);
+            formData.append("Gender", gender);
+            formData.append("BirthDate", birthOfDate);
+            formData.append("PhoneNumber", phoneNumber);
+            formData.append("Email", email);
+            formData.append("Address", address);
+            formData.append("TypeCustomer", typeCustomer);
+            formData.append("CLoginName", cloginName);
+            formData.append("Password", password);
+            formData.append("ImageFile", imageFile);
+            if (imageFile) {
+                formData.append("UrlImage", imageFile);
+            } else {
+                var oldImage = $("#url-image").val();
+                formData.append("UrlImage", oldImage);
+            }
+            $.ajax({
+                url: "https://localhost:7252/api/Customer/update",
+                method: "PUT",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    alert("Cập nhật thông tin thành công.");
+                },
+                error: function (xhr, status, error) {
+                    alert("Có lỗi xảy ra khi cập nhật thông tin.");
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+    </script>
+    </body>
+
+</html>

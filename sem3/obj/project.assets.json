@@ -712,11 +712,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\sem3.csproj",
+      "projectUniqueName": "D:\\eProject_SEM3_Group4\\SourceCode\\EProject3\\sem3\\sem3.csproj",
       "projectName": "sem3",
-      "projectPath": "D:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\sem3.csproj",
+      "projectPath": "D:\\eProject_SEM3_Group4\\SourceCode\\EProject3\\sem3\\sem3.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\eProject_SEM3_Group4\\SourceCode\\sem3\\sem3\\obj\\",
+      "outputPath": "D:\\eProject_SEM3_Group4\\SourceCode\\EProject3\\sem3\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
