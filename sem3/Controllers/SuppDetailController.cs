@@ -9,11 +9,12 @@ namespace sem3.Controllers
     [ApiController]
     public class SuppDetailController : ControllerBase
     {
+        string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
         [HttpGet("all")]
         public async Task<IEnumerable<SuppDetail>> GetSuppDetails()
         {
             var suppdetails = new List<SuppDetail>();
-            string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
+            
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -44,6 +45,32 @@ namespace sem3.Controllers
                 }
             }
             return suppdetails;
+        }
+        [HttpPost("insert")]
+
+        public async Task<IActionResult> InsertSuppInvoice([FromForm] SuppDetail suppDetail)
+
+        {
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var commandText = "INSERT INTO SuppDetail(SupplierId, NameDetail, NumPeople, CustomerCost, SupplierCost, Flag) VALUES  (@SupplierId, @NameDetail, @NumPeople, @CustomerCost, @SupplierCost, @Flag)";
+
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    command.Parameters.AddWithValue("@SupplierId", suppDetail.SupplierId);
+                    command.Parameters.AddWithValue("@NameDetail", suppDetail.NameDetail);
+                    command.Parameters.AddWithValue("@NumPeople", suppDetail.NumPeople);
+                    command.Parameters.AddWithValue("@CustomerCost", suppDetail.CustomerCost);
+                    command.Parameters.AddWithValue("@SupplierCost", suppDetail.SupplierCost);
+                    command.Parameters.AddWithValue("@Flag", suppDetail.Flag);
+                    command.ExecuteNonQuery();
+
+                }
+            }
+            return Ok(suppDetail);
         }
     }
 }
