@@ -7,20 +7,20 @@ namespace sem3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AcityController : ControllerBase
+    public class CustOderMenuController : ControllerBase
     {
         string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
 
         [HttpGet("all")]
-        public async Task<IEnumerable<Acity>> GetAcities()
+        public async Task<IEnumerable<CustOderMenu>> GetCustOrderMenu()
         {
-            var acities = new List<Acity>();
+            var custordermenus = new List<CustOderMenu>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                var commandText = "SELECT * FROM Acity;";
+                var commandText = "SELECT * FROM CustOderMenu;";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
@@ -28,23 +28,23 @@ namespace sem3.Controllers
                     {
                         while (reader.Read())
                         {
-                            var acity = new Acity
+                            var custordermenu = new CustOderMenu
                             {
-                                AcityId = reader.GetInt32(reader.GetOrdinal("AcityId")),
-                                CityName = reader.GetString(reader.GetOrdinal("CityName")),
-                                ParentId = reader.GetInt32(reader.GetOrdinal("ParentId")),
+                                CustOderMenuId = reader.GetInt32(reader.GetOrdinal("CustOderMenuId")),
+                                MenuItemId = reader.GetInt32(reader.GetOrdinal("MenuItemId")),
+                                CustOderSuppId = reader.GetInt32(reader.GetOrdinal("CustOderSuppId")),
                                 Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
                             };
-                            acities.Add(acity);
+                            custordermenus.Add(custordermenu);
                         }
                     }
 
                 }
             }
-            return acities;
+            return custordermenus;
         }
         [HttpPost("insert")]
-        public async Task<IActionResult> InsertAcity([FromForm] Acity acity)
+        public async Task<IActionResult> InsertCustInvoice([FromForm] CustOderMenu custOrderMenu)
 
         {
 
@@ -52,18 +52,19 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO Acity(CityName, ParentId, Flag) VALUES  (@CityName, @ParentId , @Flag)";
+                var commandText = "INSERT INTO CustOderMenu(MenuItemId, CustOderSuppId, Flag) VALUES  (@MenuItemId, @CustOderSuppId, @Flag)";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
-                    command.Parameters.AddWithValue("@CityName", acity.CityName);
-                    command.Parameters.AddWithValue("@ParentId", acity.ParentId);  
-                    command.Parameters.AddWithValue("@Flag", acity.Flag);
+                    command.Parameters.AddWithValue("@MenuItemId", custOrderMenu.MenuItemId);
+                    command.Parameters.AddWithValue("@CustOderSuppId", custOrderMenu.CustOderSuppId);                              
+                    command.Parameters.AddWithValue("@Flag", custOrderMenu.Flag);
                     command.ExecuteNonQuery();
 
                 }
             }
-            return Ok(acity);
+            return Ok(custOrderMenu);
         }
+
     }
 }
