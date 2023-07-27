@@ -67,7 +67,7 @@ namespace sem3.Controllers
         }
         // POST api/supplier/updateProfile
         [HttpPost("updateProfile")]
-        public IActionResult UpdateSupplierProfile([FromBody] Supplier supplier)
+        public IActionResult UpdateSupplierProfile([FromForm] Supplier supplier)
         {
             if (!ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace sem3.Controllers
                     connection.Open();
 
                     string query = "UPDATE Suppliers SET SName = @SName, PhoneNumber = @PhoneNumber, Address = @Address, " +
-                                   "Email = @Email, SLevel = @SLevel, Image = @Image, ACityId = @ACityId " +
+                                   "Email = @Email, SLevel = @SLevel, UrlImage = @UrlImage,EventId = @EventId, ACityId = @ACityId " +
                                    "WHERE SupplierId = @SupplierId";
 
                     using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -100,7 +100,8 @@ namespace sem3.Controllers
                         cmd.Parameters.AddWithValue("@Address", supplier.Address);
                         cmd.Parameters.AddWithValue("@Email", supplier.Email);
                         cmd.Parameters.AddWithValue("@SLevel", supplier.SLevel);
-                        cmd.Parameters.AddWithValue("@Image", supplier.Image);
+                        cmd.Parameters.AddWithValue("@UrlImage", supplier.Image);
+                      
                         cmd.Parameters.AddWithValue("@ACityId", supplier.ACityId);
                         cmd.Parameters.AddWithValue("@SupplierId", supplier.SupplierId);
 

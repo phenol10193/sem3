@@ -9,6 +9,7 @@
         public string? Email { get; set; }
         public string? SLevel { get; set; }
         public string? Image { get; set; }
+        public  int? EventId { get; set; }
         public int ACityId { get; set; }
         public string SLoginName { get; set; }
         public string Password { get; set; }
