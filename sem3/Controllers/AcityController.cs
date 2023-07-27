@@ -10,11 +10,10 @@ namespace sem3.Controllers
     public class AcityController : ControllerBase
     {
         string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
-
         [HttpGet("all")]
-        public async Task<IEnumerable<Acity>> GetAcities()
+        public async Task<IEnumerable<Acity>> GetAcitys()
         {
-            var acities = new List<Acity>();
+            var Acitys = new List<Acity>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -28,21 +27,22 @@ namespace sem3.Controllers
                     {
                         while (reader.Read())
                         {
-                            var acity = new Acity
+                            var acity= new Acity
                             {
                                 AcityId = reader.GetInt32(reader.GetOrdinal("AcityId")),
                                 CityName = reader.GetString(reader.GetOrdinal("CityName")),
-                                ParentId = reader.GetInt32(reader.GetOrdinal("ParentId")),
-                                Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
+                                ParentId = reader.GetInt32(reader.GetOrdinal("ParentId")),                             
                             };
-                            acities.Add(acity);
+                            Acitys.Add(acity);
                         }
                     }
 
                 }
             }
-            return acities;
+            return Acitys;
         }
+
+
         [HttpPost("insert")]
         public async Task<IActionResult> InsertAcity([FromForm] Acity acity)
 

@@ -8,8 +8,8 @@ namespace sem3.Models
         [Required]
         public string? CityName { get; set; }
         [Required]
-        public int ParentId { get; set; }
-        [Required]
+        public int? ParentId { get; set; }
+        
         public bool Flag { get; set; }
 
     }

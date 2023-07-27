@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using sem3.Models;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace sem3.Controllers
@@ -54,8 +55,8 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO Message(CustomerId, CContent, SentDate, Flag) VALUES  (@MenuItemId, @CustOrderSuppId, @Flag)";
-
+                var commandText = "INSERT INTO Message(CustomerId, CContent, SentDate, Flag) VALUES (@MenuItemId, @CustOrderSuppId, @Flag)";
+                                  
                 using (var command = new SqlCommand(commandText, connection))
                 {
                     command.Parameters.AddWithValue("@CustomerId", message.CustomerId);
