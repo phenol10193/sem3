@@ -32,7 +32,7 @@ namespace sem3.Controllers
                             {
                                 InvoiceId = reader.GetInt32(reader.GetOrdinal("InvoiceId")),
                                 InvoiceDate = reader.GetDateTime(reader.GetOrdinal("InvoiceDate")),
-                                CustOrderSuppId = reader.GetInt32(reader.GetOrdinal("CustOrderSuppId")),
+                                CustOderSuppId = reader.GetInt32(reader.GetOrdinal("CustOderSuppId")),
                                 CustomerId = reader.GetInt32(reader.GetOrdinal("CustomerId")),
                                 VAT = reader.GetFloat(reader.GetOrdinal("VAT")),
                                 ListRoom=reader.GetString(reader.GetOrdinal("ListRoom")),
@@ -55,12 +55,12 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO CustInvoice(InvoiceDate, CustOrderSuppId, CustomerId, VAT, ListRoom, Flag) VALUES  (@InvoiceDate, @CusOrderSuppId, @CustomerId, @VAT, @ListRoom, @Flag)";
+                var commandText = "INSERT INTO CustInvoice(InvoiceDate, CustOderSuppId, CustomerId, VAT, ListRoom, Flag) VALUES  (@InvoiceDate, @CusOderSuppId, @CustomerId, @VAT, @ListRoom, @Flag)";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
                     command.Parameters.AddWithValue("@InvoiceDate", custInvoice.InvoiceDate);
-                    command.Parameters.AddWithValue("@CustOrderSuppId", custInvoice.CustOrderSuppId);
+                    command.Parameters.AddWithValue("@CustOderSuppId", custInvoice.CustOderSuppId);
                     command.Parameters.AddWithValue("@CustomerId", custInvoice.CustomerId);
                     command.Parameters.AddWithValue("@VAT", custInvoice.VAT);
                     command.Parameters.AddWithValue("@ListRoom", custInvoice.ListRoom);

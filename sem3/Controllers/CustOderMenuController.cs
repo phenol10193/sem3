@@ -12,7 +12,7 @@ namespace sem3.Controllers
         string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
 
         [HttpGet("all")]
-        public async Task<IEnumerable<CustOderMenu>> GetCustOrderMenu()
+        public async Task<IEnumerable<CustOderMenu>> GetCustOderMenus()
         {
             var custordermenus = new List<CustOderMenu>();
 
