@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- Add necessary meta tags, CSS files, and other dependencies here -->
+        <!-- Example: -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Testimonials</title>
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    </head>
+
+    <body>
+        <!-- ======= Testimonials Section ======= -->
+        <section id="testimonials" class="testimonials section-bg">
+            <div class="container" data-aos="fade-up">
+                <div class="section-title">
+                    <h2>Testimonials</h2>
+                    <p>What they're saying about us</p>
+                </div>
+
+                <div class="testimonials-slider swiper-container" data-aos="fade-up" data-aos-delay="100">
+                    <div class="swiper-wrapper" id="testimonials-container">
+                        <!-- Testimonials will be dynamically populated here -->
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </section><!-- End Testimonials Section -->
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <script>
+            // JavaScript to fetch testimonials from the API
+            $(document).ready(function () {
+                const apiUrl = "/api/supplier/feedback/1"; // Replace with your actual API endpoint URL for a specific supplierId
+
+                // Function to fetch testimonials from the API
+                function fetchTestimonials() {
+                    $.get(apiUrl, function (data) {
+                        const testimonials = data;
+                        const testimonialsContainer = $("#testimonials-container");
+
+                        testimonials.forEach(function (testimonial) {
+                            const testimonialItem = `
+                            <div class="swiper-slide">
+                                <div class="testimonial-item">
+                                    <p>
+                                        <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                        ${testimonial.Comment}
+                                        <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                                    </p>
+                                    <img src="${testimonial.UrlImage}" class="testimonial-img" alt="">
+                                    <h3>${testimonial.FirstName}</h3>
+                                    <p>${formatDate(testimonial.FeedbackDate)}</p>
+                                </div>
+                            </div>`;
+                            testimonialsContainer.append(testimonialItem);
+                        });
+
+                        // Initialize the testimonials slider
+                        const swiper = new Swiper('.testimonials-slider', {
+                            loop: true,
+                            autoplay: true,
+                            pagination: {
+                                el: '.swiper-pagination',
+                                clickable: true,
+                            },
+                        });
+                    });
+                }
+
+                // Call the function to fetch testimonials
+                fetchTestimonials();
+
+                // Function to format date in desired format (if needed)
+                function formatDate(dateString) {
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-US', options);
+                }
+            });
+        </script>
+    </body>
+
+</html>

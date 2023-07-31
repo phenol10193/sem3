@@ -8,11 +8,12 @@
         public string? Address { get; set; }
         public string? Email { get; set; }
         public string? SLevel { get; set; }
-        public string? Image { get; set; }
-        public  int? EventId { get; set; }
+        public string? UrlImage { get; set; }
+        public IFormFile? ImageFile { get; set; }
         public int ACityId { get; set; }
-        public string SLoginName { get; set; }
+        public string? SLoginName { get; set; }
         public string Password { get; set; }
+        public List<Service>? Services { get; set; }
         //public bool Flag { get; set; }
     }
 }
