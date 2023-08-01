@@ -10,12 +10,12 @@ namespace sem3.Controllers
     public class CategoryController : ControllerBase
     {
 
-        string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
+        string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=OnlineCatere;Trusted_Connection=True;";
 
         [HttpGet("all")]
         public async Task<IEnumerable<Category>> GetCategories()
         {
-            var categories= new List<Category>();
+            var categories = new List<Category>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -42,7 +42,7 @@ namespace sem3.Controllers
 
                 }
             }
-            return categories ;
+            return categories;
         }
 
         [HttpPost("insert")]
@@ -54,18 +54,70 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO Category(Name, ParentId, Flag) VALUES  (@Name, @ParentId, @Flag)";
+                var commandText = "INSERT INTO Category(Name, ParentId) VALUES  (@Name, @ParentId)";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
                     command.Parameters.AddWithValue("@Name", category.Name);
                     command.Parameters.AddWithValue("@ParentId", category.ParentId);
-                    command.Parameters.AddWithValue("@Flag", category.Flag);
+                   
                     command.ExecuteNonQuery();
 
                 }
             }
             return Ok(category);
         }
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateCategory([FromForm] Category Category)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //try
+            //{
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE Category SET Name = @Name, ParentId = @ParentId WHERE CategoryId = @CategoryId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@CategoryId", Category.CategoryId);
+                    cmd.Parameters.AddWithValue("@Name", Category.Name);
+                    cmd.Parameters.AddWithValue("@ParentId", Category.ParentId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" updated successfully.");
+
+        }
+        [HttpPut("{categoryId}")]
+        public async Task<IActionResult> DeleteCategory(int categoryId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE Category SET Flag = @Flag WHERE CategoryId = @CategoryId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Flag", true);
+                    cmd.Parameters.AddWithValue("@CategoryId", categoryId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" delete successfully.");
+        
+        }
     }
 }
+

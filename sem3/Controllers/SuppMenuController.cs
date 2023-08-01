@@ -10,7 +10,7 @@ namespace sem3.Controllers
     public class SuppMenuController : ControllerBase
 
     {
-        string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
+        string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=OnlineCatere;Trusted_Connection=True;";
 
         [HttpGet("all")]
         public async Task<IEnumerable<SuppMenu>> GetSuppMenu()
@@ -71,6 +71,60 @@ namespace sem3.Controllers
                }
             }
             return Ok(suppMenu);
+        }
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateSuppMenu([FromForm] SuppMenu SuppMenu)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+           
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE SuppMenu SET ItemName = @ItemName, Price = @Price, CategoryId = @CategoryId, SupplierId = @SupplierId" +
+                                "WHERE MenuItemId = @MenuItemId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@ItemName", SuppMenu.ItemName);
+                    cmd.Parameters.AddWithValue("@Price", SuppMenu.Price);
+                    cmd.Parameters.AddWithValue("@CategoryId", SuppMenu.CategoryId);
+                    cmd.Parameters.AddWithValue("@SupplierId", SuppMenu.SupplierId);
+                    cmd.Parameters.AddWithValue("@MenuItemId", SuppMenu.MenuItemId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" updated successfully.");
+
+        }
+        [HttpPut("{menuItemId}")]
+        public async Task<IActionResult> DeleteSuppMenu(int menuItemId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE SuppMenu SET Flag = @Flag WHERE MenuItemId = @MenuItemId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Flag", true);
+                    cmd.Parameters.AddWithValue("@MenuItemId", menuItemId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" delete successfully.");
+
         }
     }
 }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                Insert SuppDetail
+              </div>
+              <div class="card-body">
+                <form id="SuppDetailform"  onsubmit="insertSuppDetail(event)">
+                  <div class="form-group" >
+                    <label for="SupplierId">Supplier Id:</label>
+                    <input type="number" class="form-control form-control-lg" id="SupplierId"  name="SupplierId" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="NameDetail">Name Detail:</label>
+                    <input type="text" class="form-control form-control-lg" id="NameDetail" placeholder="Enter CustOderSupp Id" name="NameDetail">
+                  </div>
+                  <div class="form-group">
+                    <label for="NumPeople">Number People:</label>
+                    <input type="number" class="form-control form-control-lg" id="NumPeople" placeholder="Enter Customer Id" name="NumPeople">
+                  </div>
+                  <div class="form-group">
+                    <label for="CustomerCost"> Customer Cost:</label>
+                    <input type="number" class="form-control form-control-lg" id="CustomerCost" placeholder="Enter Customer Cost" name="CustomerCost">
+                  </div>
+                  <div class="form-group">
+                    <label for="SupplierCost">Supplier Cost:</label>
+                    <input type="text" class="form-control form-control-lg" id="SupplierCost" placeholder="Enter Supplier Cost " name="SupplierCost">
+                  </div>
+
+                  <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <script>
+   function insertSuppDetail(event) {
+        event.preventDefault();
+
+        var formData = new FormData();
+
+        formData.append("InvoiceDate", $("#InvoiceDate").val());
+        formData.append("NameDetail", $("#NameDetail").val());
+        formData.append("NumPeople", $("#NumPeople").val());
+        formData.append("CustomerCost", $("#CustomerCost").val());
+        formData.append("SupplierCost", $("#SupplierCost").val());
+        
+
+        $.ajax({
+          url: "https://localhost:7252/api/SuppDetail/insert",
+          type: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (data) {
+            alert("insert  successful!");
+           
+            window.location.href = "SuppDetailad.html";
+          },
+          error: function (error) {
+            alert("error can't insert. Please try again.");
+            console.error("Error :", error);
+          }
+        });
+      }
+  
+  </script>
+</body>
+</html>
