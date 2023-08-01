@@ -9,7 +9,7 @@ namespace sem3.Controllers
     [ApiController]
     public class CustOderMenuController : ControllerBase
     {
-        string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
+        string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=OnlineCatere;Trusted_Connection=True;";
 
         [HttpGet("all")]
         public async Task<IEnumerable<CustOderMenu>> GetCustOderMenus()
@@ -44,7 +44,7 @@ namespace sem3.Controllers
             return custordermenus;
         }
         [HttpPost("insert")]
-        public async Task<IActionResult> InsertCustInvoice([FromForm] CustOderMenu custOrderMenu)
+        public async Task<IActionResult> InsertCustOderMenu([FromForm] CustOderMenu custOrderMenu)
 
         {
 
@@ -52,7 +52,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO CustOderMenu(MenuItemId, CustOderSuppId, Flag) VALUES  (@MenuItemId, @CustOderSuppId, @Flag)";
+                var commandText = "INSERT INTO CustOderMenu(MenuItemId, CustOderSuppId) VALUES  (@MenuItemId, @CustOderSuppId)";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
@@ -65,6 +65,56 @@ namespace sem3.Controllers
             }
             return Ok(custOrderMenu);
         }
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateCustOderMenu([FromForm] CustOderMenu CustOderMenu)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
 
+                string query = "UPDATE CustOderMenu SET MenuItemId = @MenuItemId, CustOderSuppId = @CustOderSuppId" +
+                                "WHERE CustOderMenuId = @CustOderMenuId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@MenuItemId", CustOderMenu.MenuItemId);
+                    cmd.Parameters.AddWithValue("@CustOderSuppId", CustOderMenu.CustOderSuppId);
+                    cmd.Parameters.AddWithValue("@CustOderMenuId", CustOderMenu.CustOderMenuId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" updated successfully.");
+
+        }
+        [HttpPut("{custOderMenuId}")]
+        public async Task<IActionResult> DeleteCustOderMenu(int custOderMenuId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE CustOderMenu SET Flag = @Flag WHERE CustOderMenuId = @CustOderMenuId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Flag", true);
+                    cmd.Parameters.AddWithValue("@CustOderMenuId", custOderMenuId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" delete successfully.");
+
+        }
     }
 }

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .sidebar {
+            background-color: #343a40;
+            color: #ffffff;
+            height: 100vh;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 250px;
+            padding: 1rem;
+        }
+
+        .sidebar .nav-link {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #bfbfbf;
+        }
+
+        .navbar {
+            background-color: #f8f9fa;
+            color: #343a40;
+            padding: 1rem;
+        }
+
+        .navbar-brand {
+            color: #343a40;
+            font-weight: bold;
+            font-size: 2rem;
+            margin-right: 2rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: #343a40;
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #bfbfbf;
+        }
+
+        .navbar-nav .nav-link.active {
+            font-weight: bold;
+        }
+
+        .navbar-nav .ml-auto .nav-link {
+            color: #343a40;
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+        }
+
+        .navbar-nav .ml-auto .nav-link:hover {
+            color: #bfbfbf;
+        }
+    </style>
+    <title>SuppMenu</title>
+</head>
+
+<body>
+    <div>
+        <div class="sidebar d-flex flex-column align-items-center ">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Acityad.html">Acity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="SuppMenuad.html">SuppMenu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Orders</a>
+                </li>
+            </ul>
+        </div>
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="#">Admin Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Orders</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+
+    <div class="table-responsive float-right" style="float:right; width:80%;">
+        <a href="InsertSuppMenu.html" class="btn btn-primary ">Insert SuppMenu</a>
+        <table id="SuppMenuTable" class="table" style="font-size: 16px; margin-top: 20px;">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Menu Id</th>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">CategoryId</th>
+                    <th scope="col">SupplierId</th>
+                    <th scope="col">Flag</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+            </tbody>
+        </table>
+    </div>
+    <script >
+        // Function to fetch and display SuppMenu data
+        async function getCategories() {
+            let selectedSuppMenu = null;
+            try {
+                const response = await fetch('https://localhost:7252/api/SuppMenu/all'); // Replace with your actual API endpoint URL
+                if (response.ok) {
+                    const Categories = await response.json();
+
+                    const tableBody = document.getElementById('SuppMenuTable').getElementsByTagName('tbody')[0];
+
+                    Categories.forEach((SuppMenu) => {
+                        const row = tableBody.insertRow();
+
+                        row.insertCell(0).textContent = SuppMenu.menuItemId;
+                        row.insertCell(1).textContent = SuppMenu.itemName;
+                        row.insertCell(2).textContent = SuppMenu.price;
+                        row.insertCell(3).textContent = SuppMenu.categoryId;
+                        row.insertCell(4).textContent = SuppMenu.supplierId;
+
+                        if (SuppMenu.flag) {
+                            row.insertCell(3).textContent = 'Restore';
+                        } else {
+                            row.insertCell(3).textContent = 'Cancel';
+                        }
+                        // Tạo nút Update
+                        const updateButton = document.createElement('button');
+                        updateButton.textContent = 'Update';
+                        updateButton.classList.add('btn', 'btn-primary', 'mr-2');
+
+
+                        // Thêm sự kiện click cho nút Update
+                        updateButton.addEventListener('click', () => {
+                            selectedSuppMenu = SuppMenu;
+                            localStorage.setItem('selectedSuppMenu', JSON.stringify(selectedSuppMenu));
+                            window.location.href = 'UpdateSuppMenu.html';
+                        });
+                        // Tạo nút Delete
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';                       
+                        deleteButton.classList.add('btn', 'btn-danger', 'mr-2');
+
+                        // Thêm sự kiện click cho nút Delete
+                        deleteButton.addEventListener('click', () => {
+                        if (confirm('Are you sure you want to delete SuppMenu id: ' + SuppMenu.menuItemId + '?')) {
+                            const url = 'https://localhost:7252/api/SuppMenu/' + SuppMenu.menuItemId;
+                            fetch(url, {
+                            method: 'PUT',
+                            body: JSON.stringify({ Flag: true }),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                            })
+                            .then(response => {
+                            if (response.ok) {
+                                alert('SuppMenu deleted successfully.');
+                                window.location.href = 'SuppMenuad.html';
+                            } else if (response.status === 404) {
+                                alert('SuppMenu not found.');
+                            } else {
+                                console.error('Error:', response.statusText);
+                            }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        }
+                        });
+
+                            
+                       
+
+                        // Thêm các nút Update và Delete vào cột Actions
+                        const actionsCell = row.insertCell(4);
+                        actionsCell.appendChild(updateButton);
+                        actionsCell.appendChild(deleteButton);
+
+
+                    });
+                } else {
+                    throw new Error('Network response was not OK.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+
+            }
+        }
+
+
+        // Call the function to retrieve and display the SuppMenu data
+        getCategories();
+
+
+
+    </script>
+</body>
+
+</html>

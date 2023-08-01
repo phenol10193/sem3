@@ -9,7 +9,7 @@ namespace sem3.Controllers
     [ApiController]
     public class SuppInvoiceController : ControllerBase
     {
-        string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
+        string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=OnlineCatere;Trusted_Connection=True;";
 
         [HttpGet("all")]
         public async Task<IEnumerable<SuppInvoice>> GetSuppInvoices()
@@ -71,6 +71,35 @@ namespace sem3.Controllers
                 }
             }
             return Ok(suppInvoice);
+        }
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateSuppInvoice([FromForm] SuppInvoice SuppInvoice)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE SuppInvoice SET SuppInvoiceDate = @SuppInvoiceDate, SupplierId = @SupplierId, ListRoom = @ListRoom, PersonInvoice = @PersonInvoice" +
+                                "WHERE SuppInvoiceId = @SuppInvoiceId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@SuppInvoiceDate", SuppInvoice.SuppInvoiceDate);
+                    cmd.Parameters.AddWithValue("@SupplierId", SuppInvoice.SupplierId);
+                    cmd.Parameters.AddWithValue("@ListRoom", SuppInvoice.ListRoom);
+                    cmd.Parameters.AddWithValue("@PersonInvoice", SuppInvoice.PersonInvoice);
+                    cmd.Parameters.AddWithValue("@SuppInvoiceId", SuppInvoice.SuppInvoiceId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" updated successfully.");
+
         }
     }
 }

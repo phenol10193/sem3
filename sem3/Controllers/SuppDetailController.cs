@@ -9,7 +9,7 @@ namespace sem3.Controllers
     [ApiController]
     public class SuppDetailController : ControllerBase
     {
-        string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
+        string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=OnlineCatere;Trusted_Connection=True;";
         [HttpGet("all")]
         public async Task<IEnumerable<SuppDetail>> GetSuppDetails()
         {
@@ -56,7 +56,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO SuppDetail(SupplierId, NameDetail, NumPeople, CustomerCost, SupplierCost, Flag) VALUES  (@SupplierId, @NameDetail, @NumPeople, @CustomerCost, @SupplierCost, @Flag)";
+                var commandText = "INSERT INTO SuppDetail(SupplierId, NameDetail, NumPeople, CustomerCost, SupplierCost) VALUES  (@SupplierId, @NameDetail, @NumPeople, @CustomerCost, @SupplierCost)";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
@@ -65,12 +65,67 @@ namespace sem3.Controllers
                     command.Parameters.AddWithValue("@NumPeople", suppDetail.NumPeople);
                     command.Parameters.AddWithValue("@CustomerCost", suppDetail.CustomerCost);
                     command.Parameters.AddWithValue("@SupplierCost", suppDetail.SupplierCost);
-                    command.Parameters.AddWithValue("@Flag", suppDetail.Flag);
+                   
                     command.ExecuteNonQuery();
 
                 }
             }
             return Ok(suppDetail);
+        }
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateSuppDetail([FromForm] SuppDetail SuppDetail)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE SuppDetail SET SupplierId = @SupplierId, NameDetail = @NameDetail, NumPeople = @NumPeople, CustomerCost = @CustomerCost, SupplierCost = @SupplierCost" +
+                                "WHERE SuppDetailId = @SuppDetailId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@SupplierId", SuppDetail.SupplierId);
+                    cmd.Parameters.AddWithValue("@NameDetail", SuppDetail.NameDetail);
+                    cmd.Parameters.AddWithValue("@NumPeople", SuppDetail.NumPeople);
+                    cmd.Parameters.AddWithValue("@CustomerCost", SuppDetail.CustomerCost);
+                    cmd.Parameters.AddWithValue("@SupplierCost", SuppDetail.SupplierCost);
+                    cmd.Parameters.AddWithValue("@SuppDetailId", SuppDetail.SuppDetailId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" updated successfully.");
+
+        }
+        [HttpPut("{suppDetailId}")]
+        public async Task<IActionResult> DeleteSuppDetail(int suppDetailId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE SuppDetail SET Flag = @Flag WHERE SuppDetailId = @SuppDetailId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Flag", true);
+                    cmd.Parameters.AddWithValue("@SuppDetailId", suppDetailId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" delete successfully.");
+
         }
     }
 }

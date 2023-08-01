@@ -9,7 +9,7 @@ namespace sem3.Controllers
     [ApiController]
     public class CustInvoiceController : ControllerBase
     {
-        string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
+        string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=OnlineCatere;Trusted_Connection=True;";
 
         [HttpGet("all")]
         public async Task<IEnumerable<CustInvoice>> GetCustInvoices()
@@ -55,7 +55,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO CustInvoice(InvoiceDate, CustOderSuppId, CustomerId, VAT, ListRoom, Flag) VALUES  (@InvoiceDate, @CusOderSuppId, @CustomerId, @VAT, @ListRoom, @Flag)";
+                var commandText = "INSERT INTO CustInvoice(InvoiceDate, CustOderSuppId, CustomerId, VAT, ListRoom) VALUES  (@InvoiceDate, @CustOderSuppId, @CustomerId, @VAT, @ListRoom)";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
@@ -64,13 +64,67 @@ namespace sem3.Controllers
                     command.Parameters.AddWithValue("@CustomerId", custInvoice.CustomerId);
                     command.Parameters.AddWithValue("@VAT", custInvoice.VAT);
                     command.Parameters.AddWithValue("@ListRoom", custInvoice.ListRoom);
-                    command.Parameters.AddWithValue("@Flag", custInvoice.Flag);
+                    
                     command.ExecuteNonQuery();
 
                 }
             }
             return Ok(custInvoice);
         }
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateCustInvoice([FromForm] CustInvoice CustInvoice)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
 
+                string query = "UPDATE CustInvoice SET InvoiceDate = @InvoiceDate, CustOderSuppId = @CustOderSuppId, CustomerId = @CustomerId, VAT = @VAT, ListRoom = @ListRoom" +
+                                "WHERE InvoiceId = @InvoiceId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@InvoiceDate", CustInvoice.InvoiceDate);
+                    cmd.Parameters.AddWithValue("@CustOderSuppId", CustInvoice.CustOderSuppId);
+                    cmd.Parameters.AddWithValue("@CustomerId", CustInvoice.CustomerId);
+                    cmd.Parameters.AddWithValue("@VAT", CustInvoice.VAT);
+                    cmd.Parameters.AddWithValue("@ListRoom", CustInvoice.ListRoom);
+                    cmd.Parameters.AddWithValue("@InvoiceId", CustInvoice.InvoiceId);                  
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" updated successfully.");
+
+        }
+        [HttpPut("{invoiceId}")]
+        public async Task<IActionResult> DeleteCustInvoice(int invoiceId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE CustInvoice SET Flag = @Flag WHERE InvoiceId = @InvoiceId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Flag", true);
+                    cmd.Parameters.AddWithValue("@InvoiceId", invoiceId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" delete successfully.");
+
+        }
     }
+
 }

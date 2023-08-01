@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Update CustInvoice</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                Update CustInvoice
+              </div>
+              <div class="card-body">
+                <form id="CustInvoiceFormUpdate"   onsubmit="updateCustInvoice(event)" ">
+                  <div class="form-group">
+                  <input type="hidden" id="InvoiceId" name="InvoiceId" >
+                  </div>
+                  <div class="form-group" >
+                    <label for="InvoiceDate">CustInvoice Date:</label>
+                    <input type="date" class="form-control form-control-lg" id="InvoiceDate" placeholder="Enter CustInvoice Date" name="InvoiceDate" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="CustOderSuppId">CustOderSupp  Id:</label>
+                    <input type="number" class="form-control form-control-lg" id="CustOderSuppId" placeholder="Enter CustOderSupp Id" name="CustOderSuppId">
+                  </div>
+                  <div class="form-group">
+                    <label for="CustomerId">Customer Id:</label>
+                    <input type="number" class="form-control form-control-lg" id="CustomerId" placeholder="Enter Customer Id" name="CustomerId">
+                  </div>
+                  <div class="form-group">
+                    <label for="VAT"> VAT:</label>
+                    <input type="number" class="form-control form-control-lg" id="VAT" placeholder="Enter VAT" name="VAT">
+                  </div>
+                  <div class="form-group">
+                    <label for="ListRoom">List Room:</label>
+                    <input type="number" class="form-control form-control-lg" id="ListRoom" placeholder="Enter List Room " name="ListRoom">
+                  </div>
+                  
+                  <button id="Update" type="submit" class="btn btn-primary btn-lg btn-block">Update</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <script>
+    // Lấy thông tin về danh mục được chọn từ localStorage
+  const selectedCustInvoice = JSON.parse(localStorage.getItem('selectedCustInvoice'));
+
+  // Hiển thị thông tin của danh mục trong các trường input
+  document.getElementById('InvoiceId').value = selectedCustInvoice.invoiceId;
+  document.getElementById('InvoiceDate').value = selectedCustInvoice.invoiceDate;
+  document.getElementById('CustOderSuppId').value = selectedCustInvoice.custOderSuppId;
+  document.getElementById('CustomerId').value = selectedCustInvoice.customerId;
+  document.getElementById('VAT').value = selectedCustInvoice.vat;
+  document.getElementById('ListRoom').value = selectedCustInvoice.listRoom;
+
+
+   function updateCustInvoice(event) {
+    event.preventDefault();
+
+    
+    var invoiceId = $("#InvoiceId").val();
+    var invoiceDate = $("#InvoiceDate").val();
+    var custOderSuppId = $("#CustOderSuppId").val();
+    var customerId = $("#CustomerId").val();
+    var vat = $("#VAT").val();
+    var listRoom = $("#ListRoom").val();
+
+
+    
+    var formData = new FormData();
+    formData.append("InvoiceId", invoiceId);
+    formData.append("InvoiceDate", invoiceDate);
+    formData.append("CustOderSuppId", custOderSuppId);
+    formData.append("CustomerId", customerId);
+    formData.append("VAT", vat);
+    formData.append("ListRoom", listRoom);
+    // Thêm dataType vào phương thức ajax
+    $.ajax({
+      url: "https://localhost:7252/api/CustInvoice/update",
+      type: "PUT",
+      data: formData,
+      processData: false,
+      contentType: false,
+      
+      success: function (data) {
+        alert(" update successful!");
+        window.location.href = "CustInvoicead.html";
+      },
+      error: function (error) {
+        alert("Có lỗi xảy ra khi cập nhật thông tin.");
+        console.error("Error :", error);
+      }
+    });
+}
+  </script>
+ 
+</body>
+</html>

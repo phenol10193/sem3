@@ -10,7 +10,7 @@ namespace sem3.Controllers
     [ApiController]
     public class SupplierController : ControllerBase
     {
-        string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
+        string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=OnlineCatere;Trusted_Connection=True;";
 
         [HttpGet("all")]
         public async Task<IEnumerable<Supplier>> GetSuppliers()

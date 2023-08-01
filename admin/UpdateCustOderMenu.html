@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Update CustOderMenu</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                Update CustOderMenu
+              </div>
+              <div class="card-body">
+                <form id="CustOderMenuFormUpdate"   onsubmit="updateCustOderMenu(event)" ">
+                  <div class="form-group">
+                  <input type="hidden" id="CustOderMenuId" name="CustOderMenuId" >
+                  </div>
+                  <div class="form-group" >
+                    <label for="MenuItemId">Menu Item Id:</label>
+                    <input type="number" class="form-control form-control-lg" id="MenuItemId" placeholder="Enter Menu Item Id" name="MenuItemId">
+                  </div>
+                  <div class="form-group">
+                    <label for="CustOderSuppId">Customer Oder Supplier Id:</label>
+                    <input type="number" class="form-control form-control-lg" id="CustOderSuppId" placeholder="Enter Customer Oder Supplier Id" name="CustOderSuppId">
+                  </div>
+                  
+                  <button id="Update" type="submit" class="btn btn-primary btn-lg btn-block">Update</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <script>
+    // Lấy thông tin về danh mục được chọn từ localStorage
+  const selectedCustOderMenu = JSON.parse(localStorage.getItem('selectedCustOderMenu'));
+
+  // Hiển thị thông tin của danh mục trong các trường input
+  document.getElementById('CustOderMenuId').value = selectedCustOderMenu.custOderMenuId;
+  document.getElementById('MenuItemId').value = selectedCustOderMenu.menuItemId;
+  document.getElementById('CustOderSuppId').value = selectedCustOderMenu.custOderSuppId;
+   function updateCustOderMenu(event) {
+    event.preventDefault();
+
+    
+    var custOderMenuId = $("#CustOderMenuId").val();
+    var menuItemId = $("#MenuItemId").val();
+    var custOderSuppId = $("#CustOderSuppId").val();
+
+    var formData = new FormData();
+    formData.append("CustOderMenuId", custOderMenuId);
+    formData.append("MenuItemId", MenuItemId);
+    formData.append("CustOderSuppId", custOderSuppId);
+
+    // Thêm dataType vào phương thức ajax
+    $.ajax({
+      url: "https://localhost:7252/api/CustOderMenu/update",
+      type: "PUT",
+      data: formData,
+      processData: false,
+      contentType: false,
+      
+      success: function (data) {
+        alert(" update successful!");
+        window.location.href = "CustOderMenuad.html";
+      },
+      error: function (error) {
+        alert("Có lỗi xảy ra khi cập nhật thông tin.");
+        console.error("Error :", error);
+      }
+    });
+}
+  </script>
+ 
+</body>
+</html>

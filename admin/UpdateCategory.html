@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Update Category</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                Update Category
+              </div>
+              <div class="card-body">
+                <form id="CategoryFormUpdate"   onsubmit="updateCategory(event)" ">
+                  <div class="form-group">
+                  <input type="hidden" id="CategoryId" name="CategoryId" >
+                  </div>
+                  <div class="form-group" >
+                    <label for="Name">Category Name:</label>
+                    <input type="text" class="form-control form-control-lg" id="Name" placeholder="Enter Category Name" name="Name">
+                  </div>
+                  <div class="form-group">
+                    <label for="ParentId">Parent Id:</label>
+                    <input type="number" class="form-control form-control-lg" id="ParentId" placeholder="Enter Parent Id" name="ParentId">
+                  </div>
+                  
+                  <button id="Update" type="submit" class="btn btn-primary btn-lg btn-block">Update</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <script>
+    // Lấy thông tin về danh mục được chọn từ localStorage
+  const selectedCategory = JSON.parse(localStorage.getItem('selectedCategory'));
+
+  // Hiển thị thông tin của danh mục trong các trường input
+  document.getElementById('CategoryId').value = selectedCategory.categoryId;
+  document.getElementById('Name').value = selectedCategory.name;
+  document.getElementById('ParentId').value = selectedCategory.parentId;
+   function updateCategory(event) {
+    event.preventDefault();
+
+    
+    var categoryId = $("#CategoryId").val();
+    var name = $("#Name").val();
+    var parentId = $("#ParentId").val();
+
+    var formData = new FormData();
+    formData.append("CategoryId", categoryId);
+    formData.append("Name", name);
+    formData.append("ParentId", parentId);
+
+    // Thêm dataType vào phương thức ajax
+    $.ajax({
+      url: "https://localhost:7252/api/Category/update",
+      type: "PUT",
+      data: formData,
+      processData: false,
+      contentType: false,
+      
+      success: function (data) {
+        alert(" update successful!");
+        window.location.href = "Categoryad.html";
+      },
+      error: function (error) {
+        alert("Có lỗi xảy ra khi cập nhật thông tin.");
+        console.error("Error :", error);
+      }
+    });
+}
+  </script>
+ 
+</body>
+</html>

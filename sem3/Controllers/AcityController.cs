@@ -9,7 +9,7 @@ namespace sem3.Controllers
     [ApiController]
     public class AcityController : ControllerBase
     {
-        string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
+        string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=OnlineCatere;Trusted_Connection=True;";
         [HttpGet("all")]
         public async Task<IEnumerable<Acity>> GetAcitys()
         {
@@ -27,13 +27,14 @@ namespace sem3.Controllers
                     {
                         while (reader.Read())
                         {
-                            var acity= new Acity
+                            var city = new Acity
                             {
-                                AcityId = reader.GetInt32(reader.GetOrdinal("AcityId")),
-                                CityName = reader.GetString(reader.GetOrdinal("CityName")),
-                                ParentId = reader.GetInt32(reader.GetOrdinal("ParentId")),                             
+                                AcityId = reader.IsDBNull(reader.GetOrdinal("AcityId")) ? 0 : reader.GetInt32(reader.GetOrdinal("AcityId")),
+                                CityName = reader.IsDBNull(reader.GetOrdinal("CityName")) ? string.Empty : reader.GetString(reader.GetOrdinal("CityName")),
+                                ParentId = reader.IsDBNull(reader.GetOrdinal("ParentId")) ? 0 : reader.GetInt32(reader.GetOrdinal("ParentId")),
+                                Flag = reader.IsDBNull(reader.GetOrdinal("Flag")) ? false : reader.GetBoolean(reader.GetOrdinal("Flag"))
                             };
-                            Acitys.Add(acity);
+                            Acitys.Add(city);
                         }
                     }
 
@@ -41,7 +42,6 @@ namespace sem3.Controllers
             }
             return Acitys;
         }
-
 
         [HttpPost("insert")]
         public async Task<IActionResult> InsertAcity([FromForm] Acity acity)
@@ -52,18 +52,68 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO Acity(CityName, ParentId, Flag) VALUES  (@CityName, @ParentId , @Flag)";
+                var commandText = "INSERT INTO Acity(CityName, ParentId) VALUES  (@CityName, @ParentId )";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
                     command.Parameters.AddWithValue("@CityName", acity.CityName);
-                    command.Parameters.AddWithValue("@ParentId", acity.ParentId);  
-                    command.Parameters.AddWithValue("@Flag", acity.Flag);
+                    command.Parameters.AddWithValue("@ParentId", acity.ParentId);                    
                     command.ExecuteNonQuery();
 
                 }
             }
             return Ok(acity);
+        }
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateAcity([FromForm] Acity Acity)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE Acity SET CityName = @CityName, ParentId = @ParentId " +
+                                "WHERE AcityId = @AcityId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@AcityId", Acity.AcityId);
+                    cmd.Parameters.AddWithValue("@CityName", Acity.CityName);
+                    cmd.Parameters.AddWithValue("@ParentId", Acity.ParentId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" updated successfully.");
+
+        }
+        [HttpPut("{acityId}")]
+        public async Task<IActionResult> DeleteAcity(int acityId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE Acity SET Flag = @Flag WHERE AcityId = @AcityId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Flag", true);
+                    cmd.Parameters.AddWithValue("@AcityId", acityId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" delete successfully.");
+
         }
     }
 }

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Update SuppMenu</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                Update SuppMenu
+              </div>
+              <div class="card-body">
+                <form id="SuppMenuFormUpdate"   onsubmit="updateSuppMenu(event)" ">
+                  <div class="form-group">
+                  <input type="hidden" id="MenuItemId" name="MenuItemId" >
+                  </div>
+                  <div class="form-group" >
+                    <label for="ItemName">Customer Id:</label>
+                    <input type="text" class="form-control form-control-lg" id="ItemName" placeholder="Enter Item Name" name="ItemName">
+                  </div>
+                  <div class="form-group">
+                    <label for="Price">Price:</label>
+                    <input type="number" class="form-control form-control-lg" id="Price" placeholder="Enter Price" name="Price" step="0.01">
+                  </div>
+                  <div class="form-group">
+                    <label for="CategoryId">CategoryId:</label>
+                    <input type="number" class="form-control form-control-lg" id="CategoryId"  name="CategoryId">
+                  </div>
+                  <div class="form-group">
+                    <label for="SupplierId">SupplierId:</label>
+                    <input type="number" class="form-control form-control-lg" id="SupplierId"  name="SupplierId">
+                  </div>
+                  <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <script>
+    // Lấy thông tin về danh mục được chọn từ localStorage
+  const selectedSuppMenu = JSON.parse(localStorage.getItem('selectedSuppMenu'));
+
+  // Hiển thị thông tin của danh mục trong các trường input
+  document.getElementById('MenuItemId').value = selectedSuppMenu.menuItemId;
+  document.getElementById('ItemName').value = selectedSuppMenu.itemName;
+  document.getElementById('Price').value = selectedSuppMenu.price;
+  document.getElementById('CategoryId').value = selectedSuppMenu.categoryId;
+  document.getElementById('SupplierId').value = selectedSuppMenu.supplierId;
+   function updateSuppMenu(event) {
+    event.preventDefault();
+    
+    var menuItemId = $("#MenuItemId").val();
+    var itemName = $("#ItemName").val();
+    var price = $("#Price").val();
+    var categoryId = $("#CategoryId").val();
+    var supplierId = $("#SupplierId").val();
+
+    var formData = new FormData();
+    formData.append("MenuItemId", menuItemId);
+    formData.append("ItemName", itemName);
+    formData.append("Price", price);
+    formData.append("CategoryId", pategoryId);
+    formData.append("SupplierId", supplierId);
+    // Thêm dataType vào phương thức ajax
+    $.ajax({
+      url: "https://localhost:7252/api/SuppMenu/update",
+      type: "PUT",
+      data: formData,
+      processData: false,
+      contentType: false,
+      
+      success: function (data) {
+        alert(" update successful!");
+        window.location.href = "SuppMenuad.html";
+      },
+      error: function (error) {
+        alert("Có lỗi xảy ra khi cập nhật thông tin.");
+        console.error("Error :", error);
+      }
+    });
+}
+  </script>
+ 
+</body>
+</html>

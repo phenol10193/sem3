@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .sidebar {
+            background-color: #343a40;
+            color: #ffffff;
+            height: 100vh;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 250px;
+            padding: 1rem;
+        }
+
+        .sidebar .nav-link {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar .nav-link:hover {
+            color: #bfbfbf;
+        }
+
+        .navbar {
+            background-color: #f8f9fa;
+            color: #343a40;
+            padding: 1rem;
+        }
+
+        .navbar-brand {
+            color: #343a40;
+            font-weight: bold;
+            font-size: 2rem;
+            margin-right: 2rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: #343a40;
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #bfbfbf;
+        }
+
+        .navbar-nav .nav-link.active {
+            font-weight: bold;
+        }
+
+        .navbar-nav .ml-auto .nav-link {
+            color: #343a40;
+            font-size: 1.2rem;
+            margin-left: 1.5rem;
+        }
+
+        .navbar-nav .ml-auto .nav-link:hover {
+            color: #bfbfbf;
+        }
+    </style>
+    <title>Acity</title>
+</head>
+
+<body>
+    <div>
+        <div class="sidebar d-flex flex-column align-items-center ">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Acityad.html">Acity</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Categoryad.html">Category</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Orders</a>
+                </li>
+            </ul>
+        </div>
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="#">Admin Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Acityad.html">Acity</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Categoryad.html">Category</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Orders</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+
+    <div class="table-responsive float-right" style="float:right; width:80%;">
+        <a href="InsertAcity.html" class="btn btn-primary ">Insert Acity</a>
+        <table id="AcityTable" class="table" style="font-size: 16px; margin-top: 20px;">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Acity Id</th>
+                    <th scope="col">Acity Name</th>
+                    <th scope="col">Parent Id</th>
+                    <th scope="col">Flag</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+            </tbody>
+        </table>
+    </div>
+    <script >
+        // Function to fetch and display Acity data
+        async function getAcities() {
+            let selectedAcity = null;
+            try {
+                const response = await fetch('https://localhost:7252/api/Acity/all'); // Replace with your actual API endpoint URL
+                if (response.ok) {
+                    const Acities = await response.json();
+
+                    const tableBody = document.getElementById('AcityTable').getElementsByTagName('tbody')[0];
+
+                    Acities.forEach((Acity) => {
+                        const row = tableBody.insertRow();
+
+                        row.insertCell(0).textContent = Acity.acityId;
+                        row.insertCell(1).textContent = Acity.cityName;
+                        row.insertCell(2).textContent = Acity.parentId;
+                        if (Acity.flag) {
+                            row.insertCell(3).textContent = 'Restore';
+                        } else {
+                            row.insertCell(3).textContent = 'Cancel';
+                        }
+                        // Tạo nút Update
+                        const updateButton = document.createElement('button');
+                        updateButton.textContent = 'Update';
+                        updateButton.classList.add('btn', 'btn-primary', 'mr-2');
+
+
+                        // Thêm sự kiện click cho nút Update
+                        updateButton.addEventListener('click', () => {
+                            selectedAcity = Acity;
+                            localStorage.setItem('selectedAcity', JSON.stringify(selectedAcity));
+                            window.location.href = 'UpdateAcity.html';
+                        });
+                        // Tạo nút Delete
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';                       
+                        deleteButton.classList.add('btn', 'btn-danger', 'mr-2');
+
+                        // Thêm sự kiện click cho nút Delete
+                        deleteButton.addEventListener('click', () => {
+                        if (confirm('Are you sure you want to delete Acity id: ' + Acity.acityId + '?')) {
+                            const url = 'https://localhost:7252/api/Acity/' + Acity.acityId;
+                            fetch(url, {
+                            method: 'PUT',
+                            body: JSON.stringify({ Flag: true }),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                            })
+                            .then(response => {
+                            if (response.ok) {
+                                alert('Acity deleted successfully.');
+                                window.location.href = 'Acityad.html';
+                            } else if (response.status === 404) {
+                                alert('Acity not found.');
+                            } else {
+                                console.error('Error:', response.statusText);
+                            }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        }
+                        });
+
+                            
+                       
+
+                        // Thêm các nút Update và Delete vào cột Actions
+                        const actionsCell = row.insertCell(4);
+                        actionsCell.appendChild(updateButton);
+                        actionsCell.appendChild(deleteButton);
+
+
+                    });
+                } else {
+                    throw new Error('Network response was not OK.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+
+            }
+        }
+
+
+        // Call the function to retrieve and display the Acity data
+        getAcities();
+
+
+
+    </script>
+</body>
+
+</html>

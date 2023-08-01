@@ -57,7 +57,8 @@
         <div class="col-md-6">
           <div class="card">
             <h2 class="card-title">Customer Registration</h2>
-            <form>
+
+            <form id="customerRegistrationForm" enctype="multipart/form-data" onsubmit="registerCustomer(event)">
               <div class="form-group">
                 <label for="customerFirstName">First Name</label>
                 <input type="text" class="form-control" id="customerFirstName" placeholder="Enter your first name">
@@ -98,8 +99,8 @@
                 <label for="customerType">Type</label>
                 <select class="form-control" id="customerType">
                   <option value="">Select type</option>
-                  <option value="Regular">Regular</option>
-                  <option value="Premium">Premium</option>
+                  <option value="Individual">Individual</option>
+                  <option value="Corporate">Corporate</option>
                 </select>
               </div>
               <div class="form-group">
@@ -118,12 +119,20 @@
                   </div>
                 </div>
               </div>
+              <div class="form-group">
+                <label for="customerImage">Profile Image</label>
+                <input type="file" class="form-control" id="customerImage">
+              </div>
+              <div id="successMessage" style="display: none;">
+                Customer registration successful! You can now proceed to login.
+              </div>
               <button type="submit" class="btn btn-primary">Register as Customer</button>
             </form>
           </div>
         </div>
       </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
       function togglePasswordVisibility() {
         var passwordInput = document.getElementById("customerPassword");
@@ -136,6 +145,43 @@
           passwordInput.type = "password";
           showPasswordToggle.innerHTML = '<i class="fa fa-eye" aria-hidden="true"></i>';
         }
+      }
+
+      function registerCustomer(event) {
+        event.preventDefault();
+
+        var formData = new FormData();
+        formData.append("FirstName", $("#customerFirstName").val());
+        formData.append("MiddleName", $("#customerMiddleName").val());
+        formData.append("LastName", $("#customerLastName").val());
+        formData.append("Gender", $("#customerGender").val());
+        formData.append("BirthDate", $("#customerBirthDate").val());
+        formData.append("PhoneNumber", $("#customerPhoneNumber").val());
+        formData.append("Email", $("#customerEmail").val());
+        formData.append("Address", $("#customerAddress").val());
+        formData.append("TypeCustomer", $("#customerType").val());
+        formData.append("CLoginName", $("#customerLoginName").val());
+        formData.append("Password", $("#customerPassword").val());
+        formData.append("UrlImage", $("#customerImage")[0].files[0]);
+
+        $.ajax({
+          url: "https://localhost:7252/api/Customer/register",
+          type: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (data) {
+            alert("Customer registration successful!");
+            $("#successMessage").show();
+            setTimeout(function () {
+              window.location.href = "customer_login.html";
+            }, 3000);
+          },
+          error: function (error) {
+            alert("Error occurred while registering customer. Please try again.");
+            console.error("Error registering customer:", error);
+          }
+        });
       }
     </script>
   </body>
