@@ -14,6 +14,9 @@ namespace sem3.Models
         [Required]
         public DateTime? FeedbackDate { get; set; }
         public bool Flag { get; set; }
+        public  Customer? Customer { get; set; } ;
+
+        public  Supplier? Supplier { get; set; };
 
 
     }

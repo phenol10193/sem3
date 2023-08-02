@@ -11,6 +11,6 @@ namespace sem3.Models
         public int? ParentId { get; set; }
         
         public bool? Flag { get; set; }
-
+        public  ICollection<Supplier>? Supplier { get; set; } 
     }
 }

@@ -19,5 +19,12 @@ namespace sem3.Models
         public int NumPeople { get; set; }
         [Required]
         public bool Flag { get; set; }
+        public  ICollection<CustInvoice>? CustInvoices { get; set; } 
+
+        public  ICollection<CustOderMenu>? CustOderMenus { get; set; } 
+
+        public  Customer? Customer { get; set; }
+
+        public Room? Room { get; set; }
     }
 }

@@ -10,5 +10,5 @@ namespace sem3.Models
         [Required]
         public int ParentId { get; set; }
         public bool? Flag { get; set; }
-    }
+        public  ICollection<SuppMenu>? SuppMenus { get; set; } 
 }
