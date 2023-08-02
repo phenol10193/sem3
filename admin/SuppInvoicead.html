@@ -65,7 +65,7 @@
             color: #bfbfbf;
         }
     </style>
-    <title>Category</title>
+    <title>SuppInvoice</title>
 </head>
 
 <body>
@@ -121,15 +121,16 @@
         </nav>
     </div>
 
-
     <div class="table-responsive float-right" style="float:right; width:80%;">
-        <a href="InsertCategory.html" class="btn btn-primary ">Insert Category</a>
-        <table id="CategoryTable" class="table" style="font-size: 16px; margin-top: 20px;">
+        <a href="InsertSuppInvoice.html" class="btn btn-primary ">Insert SuppInvoice</a>
+        <table id="SuppInvoiceTable" class="table" style="font-size: 16px; margin-top: 20px;">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">Category Id</th>
-                    <th scope="col">Category Name</th>
-                    <th scope="col">Parent Id</th>
+                    <th scope="col">Supplier Invoice Id</th>
+                    <th scope="col">Supplier Invoice Date</th>
+                    <th scope="col">Supplier Id</th>
+                    <th scope="col">List Room</th>
+                    <th scope="col">Person Invoice</th>                  
                     <th scope="col">Flag</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -141,26 +142,31 @@
         </table>
     </div>
     <script >
-        // Function to fetch and display Category data
-        async function getCategories() {
-            let selectedCategory = null;
+        // Function to fetch and display SuppInvoice data
+        async function getSuppInvoices() {
+            let selectedSuppInvoice = null;
             try {
-                const response = await fetch('https://localhost:7252/api/Category/all'); // Replace with your actual API endpoint URL
+                const response = await fetch('https://localhost:7252/api/SuppInvoice/all'); // Replace with your actual API endpoint URL
                 if (response.ok) {
-                    const Categories = await response.json();
+                    const SuppInvoices = await response.json();
 
-                    const tableBody = document.getElementById('CategoryTable').getElementsByTagName('tbody')[0];
+                    const tableBody = document.getElementById('SuppInvoiceTable').getElementsByTagName('tbody')[0];
 
-                    Categories.forEach((Category) => {
+                    SuppInvoices.forEach((SuppInvoice) => {
                         const row = tableBody.insertRow();
 
-                        row.insertCell(0).textContent = Category.categoryId;
-                        row.insertCell(1).textContent = Category.name;
-                        row.insertCell(2).textContent = Category.parentId;
-                        if (Category.flag) {
-                            row.insertCell(3).textContent = 'Restore';
+                        row.insertCell(0).textContent = SuppInvoice.suppInvoiceId;
+                        row.insertCell(1).textContent = SuppInvoice.suppInvoiceDate;
+                        row.insertCell(2).textContent = SuppInvoice.supplierId;
+                        row.insertCell(3).textContent = SuppInvoice.listRoom;
+                        row.insertCell(4).textContent = SuppInvoice.personInvoice;
+                        
+                        
+                        
+                        if (SuppInvoice.flag) {
+                            row.insertCell(5).textContent = 'Restore';
                         } else {
-                            row.insertCell(3).textContent = 'Cancel';
+                            row.insertCell(5).textContent = 'Cancel';
                         }
                         // Tạo nút Update
                         const updateButton = document.createElement('button');
@@ -170,9 +176,9 @@
 
                         // Thêm sự kiện click cho nút Update
                         updateButton.addEventListener('click', () => {
-                            selectedCategory = Category;
-                            localStorage.setItem('selectedCategory', JSON.stringify(selectedCategory));
-                            window.location.href = 'UpdateCategory.html';
+                            selectedSuppInvoice = SuppInvoice;
+                            localStorage.setItem('selectedSuppInvoice', JSON.stringify(selectedSuppInvoice));
+                            window.location.href = 'UpdateSuppInvoice.html';
                         });
                         // Tạo nút Delete
                         const deleteButton = document.createElement('button');
@@ -181,8 +187,8 @@
 
                         // Thêm sự kiện click cho nút Delete
                         deleteButton.addEventListener('click', () => {
-                        if (confirm('Are you sure you want to delete category id: ' + Category.categoryId + '?')) {
-                            const url = 'https://localhost:7252/api/Category/' + Category.categoryId;
+                        if (confirm('Are you sure you want to delete SuppInvoice id: ' + SuppInvoice.suppInvoiceId + '?')) {
+                            const url = 'https://localhost:7252/api/SuppInvoice/' + SuppInvoice.suppInvoiceId;
                             fetch(url, {
                             method: 'PUT',
                             body: JSON.stringify({ Flag: true }),
@@ -192,10 +198,10 @@
                             })
                             .then(response => {
                             if (response.ok) {
-                                alert('Category deleted successfully.');
-                                window.location.href = 'Categoryad.html';
+                                alert('SuppInvoice deleted successfully.');
+                                window.location.href = 'SuppInvoicead.html';
                             } else if (response.status === 404) {
-                                alert('Category not found.');
+                                alert('SuppInvoice not found.');
                             } else {
                                 console.error('Error:', response.statusText);
                             }
@@ -208,7 +214,7 @@
                        
 
                         // Thêm các nút Update và Delete vào cột Actions
-                        const actionsCell = row.insertCell(4);
+                        const actionsCell = row.insertCell(6);
                         actionsCell.appendChild(updateButton);
                         actionsCell.appendChild(deleteButton);
 
@@ -224,8 +230,8 @@
         }
 
 
-        // Call the function to retrieve and display the Category data
-        getCategories();
+        // Call the function to retrieve and display the SuppInvoice data
+        getSuppInvoices();
 
 
 

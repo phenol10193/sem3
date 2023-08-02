@@ -57,7 +57,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
             
-                var commandText = "INSERT INTO SuppMenu(ItemName, Price, CategoryId, SupplierId, Flag) VALUES  (@ItemName, @Price, @CategoryId, @SupplierId, @Flag)";
+                var commandText = "INSERT INTO SuppMenu(ItemName, Price, CategoryId, SupplierId) VALUES  (@ItemName, @Price, @CategoryId, @SupplierId)";
                 
                 using (var command =new SqlCommand(commandText,connection) )
                 {
@@ -65,7 +65,7 @@ namespace sem3.Controllers
                     command.Parameters.AddWithValue("@Price", suppMenu.Price);
                     command.Parameters.AddWithValue("@CategoryId", suppMenu.CategoryId);
                     command.Parameters.AddWithValue("@SupplierId", suppMenu.SupplierId);
-                    command.Parameters.AddWithValue("@Flag", suppMenu.Flag);
+                    
                     command.ExecuteNonQuery();
 
                }
