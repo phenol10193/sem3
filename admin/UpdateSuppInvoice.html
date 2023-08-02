@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Update SuppInvoice</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                Update SuppInvoice
+              </div>
+              <div class="card-body">
+                <form id="SuppInvoiceFormUpdate"   onsubmit="updateSuppInvoice(event)" ">
+                  <div class="form-group">
+                  <input type="hidden" id="SuppInvoiceId" name="SuppInvoiceId" >
+                  </div>
+                  <div class="form-group" >
+                    <label for="SuppSuppInvoiceDate">Supplier Invoice Date:</label>
+                    <input type="date" class="form-control form-control-lg" id="SuppSuppInvoiceDate" placeholder="Enter SuppInvoice Date" name="SuppSuppInvoiceDate" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="SupplierId">Supplier  Id:</label>
+                    <input type="number" class="form-control form-control-lg" id="SupplierId" placeholder="Enter Supplier Id" name="SupplierId">
+                  </div>
+                  <div class="form-group">
+                    <label for="ListRoom">List Room:</label>
+                    <input type="text" class="form-control form-control-lg" id="ListRoom" placeholder="Enter List Room" name="ListRoom">
+                  </div>
+                  <div class="form-group">
+                    <label for="PersonInvoice">Person Invoice:</label>
+                    <input type="text" class="form-control form-control-lg" id="PersonInvoice" placeholder="Enter Person Invoice " name="PersonInvoice">
+                  </div>
+                  
+                  <button id="Update" type="submit" class="btn btn-primary btn-lg btn-block">Update</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <script>
+    // Lấy thông tin về danh mục được chọn từ localStorage
+  const selectedSuppInvoice = JSON.parse(localStorage.getItem('selectedSuppInvoice'));
+
+  // Hiển thị thông tin của danh mục trong các trường input
+  document.getElementById('SuppInvoiceId').value = selectedSuppInvoice.suppInvoiceId;
+  document.getElementById('SuppInvoiceDate').value = selectedSuppInvoice.suppInvoiceDate;
+  document.getElementById('SupplierId').value = selectedSuppInvoice.supplierId;
+  document.getElementById('ListRoom').value = selectedSuppInvoice.listRoom;
+  document.getElementById('PersonInvoice').value = selectedSuppInvoice.personInvoice;
+  
+
+
+   function updateSuppInvoice(event) {
+    event.preventDefault();
+
+    
+    var suppInvoiceId = $("#SuppInvoiceId").val();
+    var suppInvoiceDate = $("#SuppInvoiceDate").val();
+    var supplierId = $("#SupplierId").val();
+    var listRoom = $("#ListRoom").val();
+    var personInvoice = $("#PersonInvoice").val();
+    
+
+
+    
+    var formData = new FormData();
+    formData.append("SuppInvoiceId", suppInvoiceId);
+    formData.append("SuppInvoiceDate", suppInvoiceDate);
+    formData.append("SupplierId", supplierId);
+    formData.append("ListRoom", listRoom);
+    formData.append("PersonInvoice", personInvoice);
+    
+    // Thêm dataType vào phương thức ajax
+    $.ajax({
+      url: "https://localhost:7252/api/SuppInvoice/update",
+      type: "PUT",
+      data: formData,
+      processData: false,
+      contentType: false,
+      
+      success: function (data) {
+        alert(" update successful!");
+        window.location.href = "SuppInvoicead.html";
+      },
+      error: function (error) {
+        alert("Có lỗi xảy ra khi cập nhật thông tin.");
+        console.error("Error :", error);
+      }
+    });
+}
+  </script>
+ 
+</body>
+</html>

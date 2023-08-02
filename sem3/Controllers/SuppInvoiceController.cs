@@ -16,7 +16,6 @@ namespace sem3.Controllers
         {
 
             var suppinvoices = new List<SuppInvoice>();
-            string _connectionString = "Server=mydb.database.windows.net;Database=OnlineCatere;User Id=Group4Catere;Password=@Hieu2104;";
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -57,7 +56,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO SuppInvoice(SupInvoiceDate, SupplierId, ListRoom, PersonInvoice, Flag) VALUES  (@SupInvoiceDate, @SupplierId, @ListRoom, @PersonInvoice, @Flag)";
+                var commandText = "INSERT INTO SuppInvoice(SupInvoiceDate, SupplierId, ListRoom, PersonInvoice) VALUES  (@SupInvoiceDate, @SupplierId, @ListRoom, @PersonInvoice)";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
@@ -65,7 +64,7 @@ namespace sem3.Controllers
                     command.Parameters.AddWithValue("@SupplierId", suppInvoice.SupplierId);
                     command.Parameters.AddWithValue("@ListRoom", suppInvoice.ListRoom);
                     command.Parameters.AddWithValue("@PersonInvoice", suppInvoice.PersonInvoice);
-                    command.Parameters.AddWithValue("@Flag", suppInvoice.Flag);
+                    
                     command.ExecuteNonQuery();
 
                 }
@@ -99,6 +98,31 @@ namespace sem3.Controllers
                 }
             }
             return Ok(" updated successfully.");
+
+        }
+        [HttpPut("{suppInvoiceId}")]
+        public async Task<IActionResult> DeleteSuppInvoice(int suppInvoiceId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "UPDATE SuppInvoice SET Flag = @Flag WHERE SuppInvoiceId = @SuppInvoiceId";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Flag", true);
+                    cmd.Parameters.AddWithValue("@SuppInvoiceId", suppInvoiceId);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            return Ok(" delete successfully.");
 
         }
     }
