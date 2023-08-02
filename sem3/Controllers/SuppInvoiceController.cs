@@ -46,6 +46,7 @@ namespace sem3.Controllers
             }
             return suppinvoices;
         }
+
         [HttpPost("insert")]
 
         public async Task<IActionResult> InsertSuppInvoice([FromForm] SuppInvoice suppInvoice)

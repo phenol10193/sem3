@@ -13,6 +13,9 @@ namespace sem3.Models
         public int? SupplierId { get; set;}
         [Required]
         public bool Flag { get; set; }
+        public  ICollection<Room>? Rooms { get; set; } 
+
+        public  Supplier? Supplier { get; set; } 
 
     }
 }

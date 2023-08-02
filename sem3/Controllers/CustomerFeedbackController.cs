@@ -7,5 +7,6 @@ namespace sem3.Controllers
     [ApiController]
     public class CustomerFeedbackController : ControllerBase
     {
+
     }
 }
