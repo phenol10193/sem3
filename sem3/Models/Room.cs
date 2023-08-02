@@ -14,5 +14,12 @@ namespace sem3.Models
         [Required]
         public int? ServiceId { get;set; }
         public bool Flag { get; set; }
+        public  ICollection<CustInvoice>? CustInvoices { get; set; } 
+
+        public  ICollection<CustOderMenu>? CustOderMenus { get; set; } 
+
+        public  ICollection<CustOderSupp>? CustOderSupps { get; set; } 
+
+        public  Service? Service { get; set; }
     }
 }

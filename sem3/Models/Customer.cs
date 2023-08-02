@@ -11,7 +11,7 @@ namespace sem3.Models
         [Required]
         public string? LastName { get; set; }
         [Required(ErrorMessage = "Birth Date is required.")]
-        public DateTime BirthDate { get; set; }
+        public DateTime BirthOfDate { get; set; }
         [Required(ErrorMessage = "Gender is required.")]
         public string? Gender { get; set; }
         [Required(ErrorMessage = "Phone Number is required.")]
@@ -26,5 +26,9 @@ namespace sem3.Models
         public string? CLoginName { get; set; }
         public string? Password { get; set; }
         public bool? Flag { get; set; }
+        public ICollection<Message>? Messages { get; set; }
+        public ICollection<CustInvoice>? CustInvoice { get; set; }
+        public ICollection<CustOderSupp>? CustOderSupp { get;set; }
+        public ICollection<CustomerFeedback>? CustomerFeedback { get; set; }
     }
 }

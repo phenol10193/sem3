@@ -13,6 +13,13 @@
         public string? Image { get; set; } 
         public string? SLoginName { get; set; } 
         public string? Password { get; set; }
+        public List<Acity>? Acity { get; set; }
+        public ICollection<Service>? Service { get; set; }
+        public  ICollection<Message>? Messages { get; set; }
+        public  ICollection<CustomerFeedback>? CustomerFeedback { get; set; }
+        public ICollection<SuppDetail>? SuppDetail { get; set; }
+        public ICollection<SuppInvoice>? SuppInvoice { get; set; }
+        public ICollection<SuppMenu>? SuppMenu { get; set; }
 
     }
 }
