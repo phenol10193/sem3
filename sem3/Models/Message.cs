@@ -8,9 +8,10 @@ namespace sem3.Models
         [Required]
         public int CustomerId { get; set; }
         [Required]
-        public string? CContent { get; set; }
-        [Required]
         public int SupplierId { get; set; }
+       
+        [Required]
+        public string? Content { get; set; }
         [Required]
         public DateTime SentDate { get; set; }
         public bool Flag { get; set; }

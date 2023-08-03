@@ -25,7 +25,7 @@
                   </div>
                   <div class="form-group">
                     <label for="Price">Price :</label>
-                    <input type="number" class="form-control form-control-lg" id="Price" name="Price">
+                    <input type="number" class="form-control form-control-lg" id="Price" name="Price" step="0.01">
                   </div>
                   <div class="form-group">
                     <label for="CategoryName">Category Name :</label>
@@ -34,8 +34,10 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label for="SupplierId">Supplier Id :</label>
-                    <input type="number" class="form-control form-control-lg" id="SupplierId" name="SupplierId">
+                    <label for="SName">SupplierName :</label>
+                    <select id="SupplierSelect" class="form-control form-control-lg">
+                      <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
+                    </select>
                   </div>
                   <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                 </form>
@@ -69,6 +71,33 @@
   }
      // Gọi hàm selectCategoryName khi trang web được tải
       window.onload = selectCategoryName();
+
+      function selectSupplierName(){
+    fetch('https://localhost:7252/api/Supplier/selectSName')
+    .then(response => response.json())
+    .then(suppliers => {
+      const selectElement = document.getElementById('SupplierSelect');
+      // Thêm tùy chọn mời chọn đầu tiên
+      const defaultOption = document.createElement('option');
+      defaultOption.text = 'Mời bạn chọn';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectElement.add(defaultOption);
+      
+      // Tạo các tùy chọn từ danh sách các dịch vụ
+      suppliers.forEach(supplier => {
+        const option = document.createElement('option');
+        option.value = supplier.supplierId;
+        option.textContent = supplier.sName;
+        option.setAttribute('id', 'SupplierId');
+        selectElement.appendChild(option);
+      });
+    })
+
+  }
+  // Gọi hàm selectSupplierName khi trang web được tải
+      window.onload = selectSupplierName();
+    
    function insertSuppMenu(event) {
         event.preventDefault();
 

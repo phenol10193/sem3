@@ -65,7 +65,26 @@ namespace sem3.Controllers
                     command.Parameters.AddWithValue("@Price", suppMenu.Price);
                     command.Parameters.AddWithValue("@CategoryId", suppMenu.CategoryId);
                     command.Parameters.AddWithValue("@SupplierId", suppMenu.SupplierId);
-                    
+                    var file = HttpContext.Request.Form.Files.FirstOrDefault();
+
+                    if (file != null && file.Length > 0)
+                    {
+                        var fileName = Path.GetFileName(file.FileName);
+
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
+
+                        var filePath = Path.Combine("uploads", uniqueFileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                        }
+                        command.Parameters.AddWithValue("@UrlImage", filePath);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@UrlImage", DBNull.Value);
+                    }
                     command.ExecuteNonQuery();
 
                }
@@ -84,7 +103,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                string query = "UPDATE SuppMenu SET ItemName = @ItemName, Price = @Price, CategoryId = @CategoryId, SupplierId = @SupplierId" +
+                string query = "UPDATE SuppMenu SET ItemName = @ItemName, Price = @Price, CategoryId = @CategoryId, SupplierId = @SupplierId " +
                                 "WHERE MenuItemId = @MenuItemId";
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -94,7 +113,7 @@ namespace sem3.Controllers
                     cmd.Parameters.AddWithValue("@CategoryId", SuppMenu.CategoryId);
                     cmd.Parameters.AddWithValue("@SupplierId", SuppMenu.SupplierId);
                     cmd.Parameters.AddWithValue("@MenuItemId", SuppMenu.MenuItemId);
-
+                   
                     await cmd.ExecuteNonQueryAsync();
                 }
             }

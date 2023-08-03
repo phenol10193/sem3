@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Insert Message</title>
+    <title>Insert Service</title>
 </head>
 
 <body>
@@ -15,31 +15,25 @@
           <div class="col-md-6">
             <div class="card">
               <div class="card-header">
-                Insert Message
+                Insert Service
               </div>
               <div class="card-body">
-                <form id="Messageform"  onsubmit="insertMessage(event)">
+                <form id="Serviceform" onsubmit="insertService(event)">
                   <div class="form-group" >
-                    <label for="Name">Customer Name :</label>
-                    <select id="CustomerSelect" class="form-control form-control-lg">
-                      <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
-                    </select>
+                    <label for="ServiceName">Service Name:</label>
+                    <input type="text" class="form-control form-control-lg" id="ServiceName" placeholder="Enter  Service Name" name="ServiceName">
                   </div>
-                  <div class="form-group" >
+                  <div class="form-group">
+                    <label for="Description">Description :</label>
+                    <input type="text" class="form-control form-control-lg" id="Description" placeholder="Description" name="Description" >
+                  </div>         
+                  </div>
+                  <div class="form-group">
                     <label for="SName">SupplierName :</label>
                     <select id="SupplierSelect" class="form-control form-control-lg">
                       <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
                     </select>
                   </div>
-                  <div class="form-group">
-                    <label for="Content">Content:</label>
-                    <input type="text" class="form-control form-control-lg" id="Content" placeholder="Enter Content" name="Content">
-                  </div>
-                  <div class="form-group">
-                    <label for="SentDate">SentDate:</label>
-                    <input type="date" class="form-control form-control-lg" id="SentDate"  name="SentDate">
-                  </div>
-                  
                   <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                 </form>
               </div>
@@ -48,31 +42,8 @@
         </div>
       </div>
   <script>
-    function selectCustomerName(){
-    fetch('https://localhost:7252/api/Customer/Selectcustomer')
-    .then(response => response.json())
-    .then(customers => {
-      const selectElement = document.getElementById('CustomerSelect');
-      // Thêm tùy chọn mời chọn đầu tiên
-      const defaultOption = document.createElement('option');
-      defaultOption.text = 'Mời bạn chọn';
-      defaultOption.disabled = true;
-      defaultOption.selected = true;
-      selectElement.add(defaultOption);
-      
-      // Tạo các tùy chọn từ danh sách các dịch vụ
-      customers.forEach(customer => {
-        const option = document.createElement('option');
-        option.value = customer.customerId;
-        option.textContent = customer.firstName + " "+ customer.middleName + " "+customer.lastName +"-"+customer.phoneNumber;
-        option.setAttribute('id', 'CustomerId');
-        selectElement.appendChild(option);
-      });
-    })
-  }
-    // Gọi hàm selectCustomerName khi trang web được tải
-    window.onload = selectCustomerName();
-    function selectSupplierName(){
+    
+      function selectSupplierName(){
     fetch('https://localhost:7252/api/Supplier/selectSName')
     .then(response => response.json())
     .then(suppliers => {
@@ -97,19 +68,18 @@
   }
   // Gọi hàm selectSupplierName khi trang web được tải
       window.onload = selectSupplierName();
-
-   function insertMessage(event) {
+    
+   function insertService(event) {
         event.preventDefault();
 
         var formData = new FormData();
-        formData.append("CustomerId", $("#CustomerId").val());
+        formData.append("ServiceName", $("#ServiceName").val());
+        formData.append("Description", $("#Description").val());
         formData.append("SupplierId", $("#SupplierId").val());
-        formData.append("Content", $("#Content").val());
-        formData.append("SentDate", $("#SentDate").val());
-
+        
 
         $.ajax({
-          url: "https://localhost:7252/api/Message/insert",
+          url: "https://localhost:7252/api/Service/insert",
           type: "POST",
           data: formData,
           processData: false,
@@ -117,7 +87,7 @@
           success: function (data) {
             alert("insert  successful!");
            
-            window.location.href = "Messagead.html";
+            window.location.href = "Servicead.html";
           },
           error: function (error) {
             alert("error can't insert. Please try again.");

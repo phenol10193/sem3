@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Document</title>
+    <title> Insert SuppDetail</title>
 </head>
 
 <body>
@@ -19,9 +19,11 @@
               </div>
               <div class="card-body">
                 <form id="SuppDetailform"  onsubmit="insertSuppDetail(event)">
-                  <div class="form-group" >
-                    <label for="SupplierId">Supplier Id:</label>
-                    <input type="number" class="form-control form-control-lg" id="SupplierId"  name="SupplierId" required>
+                  <div class="form-group">
+                    <label for="SName">SupplierName :</label>
+                    <select id="SupplierSelect" class="form-control form-control-lg">
+                      <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
+                    </select>
                   </div>
                   <div class="form-group">
                     <label for="NameDetail">Name Detail:</label>
@@ -29,15 +31,15 @@
                   </div>
                   <div class="form-group">
                     <label for="NumPeople">Number People:</label>
-                    <input type="number" class="form-control form-control-lg" id="NumPeople" placeholder="Enter Customer Id" name="NumPeople">
+                    <input type="number" class="form-control form-control-lg" id="NumPeople" placeholder="Enter Number People" name="NumPeople" value="0" step="1" min="0">
                   </div>
                   <div class="form-group">
                     <label for="CustomerCost"> Customer Cost:</label>
-                    <input type="number" class="form-control form-control-lg" id="CustomerCost" placeholder="Enter Customer Cost" name="CustomerCost">
+                    <input type="number" class="form-control form-control-lg" id="CustomerCost" placeholder="Enter Customer Cost" name="CustomerCost" value="0" min="0" step="0.01">
                   </div>
                   <div class="form-group">
                     <label for="SupplierCost">Supplier Cost:</label>
-                    <input type="text" class="form-control form-control-lg" id="SupplierCost" placeholder="Enter Supplier Cost " name="SupplierCost">
+                    <input type="number" class="form-control form-control-lg" id="SupplierCost" placeholder="Enter Supplier Cost " name="SupplierCost" value="0"  min="0" step="0.01">
                   </div>
 
                   <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
@@ -48,12 +50,40 @@
         </div>
       </div>
   <script>
+    function selectSupplierName(){
+    fetch('https://localhost:7252/api/Supplier/selectSName')
+    .then(response => response.json())
+    .then(suppliers => {
+      const selectElement = document.getElementById('SupplierSelect');
+      // Thêm tùy chọn mời chọn đầu tiên
+      const defaultOption = document.createElement('option');
+      defaultOption.text = 'Mời bạn chọn';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectElement.add(defaultOption);
+      
+      // Tạo các tùy chọn từ danh sách các dịch vụ
+      suppliers.forEach(supplier => {
+        const option = document.createElement('option');
+        option.value = supplier.supplierId;
+        option.textContent = supplier.sName;
+        option.setAttribute('id', 'SupplierId');
+        selectElement.appendChild(option);
+      });
+    })
+
+  }
+  // Gọi hàm selectSupplierName khi trang web được tải
+      window.onload = selectSupplierName();
+
+
+
    function insertSuppDetail(event) {
         event.preventDefault();
 
         var formData = new FormData();
 
-        formData.append("InvoiceDate", $("#InvoiceDate").val());
+        formData.append("SupplierId", $("#SupplierId").val());
         formData.append("NameDetail", $("#NameDetail").val());
         formData.append("NumPeople", $("#NumPeople").val());
         formData.append("CustomerCost", $("#CustomerCost").val());

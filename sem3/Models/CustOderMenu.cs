@@ -19,6 +19,6 @@ namespace sem3.Models
         public SuppMenu? SuppMenu { get; set; }
 
         public Room? Room { get; set; }
-        public string ItemName { get; internal set; }
+       
     }
 }

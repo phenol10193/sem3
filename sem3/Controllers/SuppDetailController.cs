@@ -13,8 +13,8 @@ namespace sem3.Controllers
         [HttpGet("all")]
         public async Task<IEnumerable<SuppDetail>> GetSuppDetails()
         {
-            var suppdetails = new List<SuppDetail>();
-            
+
+            var SuppDetails = new List<SuppDetail>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -28,23 +28,23 @@ namespace sem3.Controllers
                     {
                         while (reader.Read())
                         {
-                            var suppdetail = new SuppDetail
+                            var SuppDetail = new SuppDetail
                             {
                                 SuppDetailId = reader.GetInt32(reader.GetOrdinal("SuppDetailId")),
                                 SupplierId = reader.GetInt32(reader.GetOrdinal("SupplierId")),
                                 NameDetail = reader.GetString(reader.GetOrdinal("NameDetail")),
                                 NumPeople = reader.GetInt32(reader.GetOrdinal("NumPeople")),
-                                CustomerCost = reader.GetFloat(reader.GetOrdinal("CustomerCost")),
-                                SupplierCost= reader.GetFloat(reader.GetOrdinal("SupplierCost")),
-                                Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
+                                CustomerCost = reader.GetDouble(reader.GetOrdinal("CustomerCost")),
+                                SupplierCost = reader.GetDouble(reader.GetOrdinal("SupplierCost")),
+                                Flag = reader.GetBoolean(reader.GetOrdinal("Flag")),
                             };
-                            suppdetails.Add(suppdetail);
+                            SuppDetails.Add(SuppDetail);
                         }
                     }
 
                 }
             }
-            return suppdetails;
+            return SuppDetails;
         }
         [HttpGet("selectNameDetail")]
         public async Task<IEnumerable<SuppDetail>> GetSuppDetail()
@@ -81,7 +81,7 @@ namespace sem3.Controllers
         }
         [HttpPost("insert")]
 
-        public async Task<IActionResult> InsertSuppInvoice([FromForm] SuppDetail suppDetail)
+        public async Task<IActionResult> InsertSuppDetail([FromForm] SuppDetail suppDetail)
 
         {
 
@@ -89,7 +89,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO SuppDetail(SupplierId, NameDetail, NumPeople, CustomerCost, SupplierCost) VALUES  (@SupplierId, @NameDetail, @NumPeople, @CustomerCost, @SupplierCost)";
+                var commandText = "INSERT INTO SuppDetail(SupplierId, NameDetail, NumPeople, CustomerCost, SupplierCost ) VALUES  (@SupplierId, @NameDetail, @NumPeople, @CustomerCost, @SupplierCost )";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
@@ -117,7 +117,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                string query = "UPDATE SuppDetail SET SupplierId = @SupplierId, NameDetail = @NameDetail, NumPeople = @NumPeople, CustomerCost = @CustomerCost, SupplierCost = @SupplierCost" +
+                string query = "UPDATE SuppDetail SET SupplierId = @SupplierId, NameDetail = @NameDetail, NumPeople = @NumPeople, CustomerCost = @CustomerCost, SupplierCost = @SupplierCost " +
                                 "WHERE SuppDetailId = @SuppDetailId";
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))

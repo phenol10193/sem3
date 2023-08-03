@@ -65,7 +65,7 @@
             color: #bfbfbf;
         }
     </style>
-    <title>SuppInvoice</title>
+    <title>Room</title>
 </head>
 
 <body>
@@ -98,7 +98,7 @@
                     <a class="nav-link" href="SuppInvoicead.html">Supplier Invoice</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="SuppMenuad.html">Supplier Menu</a>
+                    <a class="nav-link" href="Roomad.html">Supplier Menu</a>
                 </li>
             </ul>
         </div>
@@ -122,15 +122,15 @@
     </div>
 
     <div class="table-responsive float-right" style="float:right; width:80%;">
-        <a href="InsertSuppInvoice.html" class="btn btn-primary ">Insert SuppInvoice</a>
-        <table id="SuppInvoiceTable" class="table" style="font-size: 16px; margin-top: 20px;">
+        <a href="InsertRoom.html" class="btn btn-primary ">Insert Room</a>
+        <table id="RoomTable" class="table" style="font-size: 16px; margin-top: 20px;">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">Supplier Invoice Id</th>
-                    <th scope="col">Supplier Invoice Date</th>
-                    <th scope="col">Supplier </th>
-                    <th scope="col">List Room</th>
-                    <th scope="col">Person Invoice</th>                  
+                    <th scope="col">Room Id</th>
+                    <th scope="col">Room Name</th>
+                    <th scope="col">Capacity</th>
+                    <th scope="col">Room Price</th>
+                    <th scope="col">Service Id</th>
                     <th scope="col">Flag</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -142,28 +142,26 @@
         </table>
     </div>
     <script >
-        // Function to fetch and display SuppInvoice data
-        async function getSuppInvoices() {
-            let selectedSuppInvoice = null;
+        // Function to fetch and display Room data
+        async function getRooms() {
+            let selectedRoom = null;
             try {
-                const response = await fetch('https://localhost:7252/api/SuppInvoice/all'); // Replace with your actual API endpoint URL
+                const response = await fetch('https://localhost:7252/api/Room/all'); // Replace with your actual API endpoint URL
                 if (response.ok) {
-                    const SuppInvoices = await response.json();
+                    const Rooms = await response.json();
 
-                    const tableBody = document.getElementById('SuppInvoiceTable').getElementsByTagName('tbody')[0];
+                    const tableBody = document.getElementById('RoomTable').getElementsByTagName('tbody')[0];
 
-                    SuppInvoices.forEach((SuppInvoice) => {
+                    Rooms.forEach((Room) => {
                         const row = tableBody.insertRow();
 
-                        row.insertCell(0).textContent = SuppInvoice.suppInvoiceId;
-                        row.insertCell(1).textContent = SuppInvoice.suppInvoiceDate;
-                        row.insertCell(2).textContent = SuppInvoice.supplierId;
-                        row.insertCell(3).textContent = SuppInvoice.listRoom;
-                        row.insertCell(4).textContent = SuppInvoice.personInvoice;
-                        
-                        
-                        
-                        if (SuppInvoice.flag) {
+                        row.insertCell(0).textContent = Room.roomId;
+                        row.insertCell(1).textContent = Room.roomName;
+                        row.insertCell(2).textContent = Room.catch;                       
+                        row.insertCell(3).textContent = Room.roomPrice;
+                        row.insertCell(4).textContent= Room.serviceId;
+
+                        if (Room.flag) {
                             row.insertCell(5).textContent = 'Restore';
                         } else {
                             row.insertCell(5).textContent = 'Cancel';
@@ -176,9 +174,9 @@
 
                         // Thêm sự kiện click cho nút Update
                         updateButton.addEventListener('click', () => {
-                            selectedSuppInvoice = SuppInvoice;
-                            localStorage.setItem('selectedSuppInvoice', JSON.stringify(selectedSuppInvoice));
-                            window.location.href = 'UpdateSuppInvoice.html';
+                            selectedRoom = Room;
+                            localStorage.setItem('selectedRoom', JSON.stringify(selectedRoom));
+                            window.location.href = 'UpdateRoom.html';
                         });
                         // Tạo nút Delete
                         const deleteButton = document.createElement('button');
@@ -187,8 +185,8 @@
 
                         // Thêm sự kiện click cho nút Delete
                         deleteButton.addEventListener('click', () => {
-                        if (confirm('Are you sure you want to delete SuppInvoice id: ' + SuppInvoice.suppInvoiceId + '?')) {
-                            const url = 'https://localhost:7252/api/SuppInvoice/' + SuppInvoice.suppInvoiceId;
+                        if (confirm('Are you sure you want to delete Room id: ' + Room.roomId + '?')) {
+                            const url = 'https://localhost:7252/api/Room/' + Room.roomId;
                             fetch(url, {
                             method: 'PUT',
                             body: JSON.stringify({ Flag: true }),
@@ -198,10 +196,10 @@
                             })
                             .then(response => {
                             if (response.ok) {
-                                alert('SuppInvoice deleted successfully.');
-                                window.location.href = 'SuppInvoicead.html';
+                                alert('Room deleted successfully.');
+                                window.location.href = 'Roomad.html';
                             } else if (response.status === 404) {
-                                alert('SuppInvoice not found.');
+                                alert('Room not found.');
                             } else {
                                 console.error('Error:', response.statusText);
                             }
@@ -230,8 +228,8 @@
         }
 
 
-        // Call the function to retrieve and display the SuppInvoice data
-        getSuppInvoices();
+        // Call the function to retrieve and display the Room data
+        getRooms();
 
 
 

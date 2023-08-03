@@ -162,9 +162,9 @@
                         row.insertCell(4).textContent = SuppMenu.supplierId;
 
                         if (SuppMenu.flag) {
-                            row.insertCell(3).textContent = 'Restore';
+                            row.insertCell(5).textContent = 'Restore';
                         } else {
-                            row.insertCell(3).textContent = 'Cancel';
+                            row.insertCell(5).textContent = 'Cancel';
                         }
                         // Tạo nút Update
                         const updateButton = document.createElement('button');
@@ -212,7 +212,7 @@
                        
 
                         // Thêm các nút Update và Delete vào cột Actions
-                        const actionsCell = row.insertCell(4);
+                        const actionsCell = row.insertCell(6);
                         actionsCell.appendChild(updateButton);
                         actionsCell.appendChild(deleteButton);
 
