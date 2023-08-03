@@ -46,6 +46,7 @@ namespace sem3.Controllers
             }
             return custInvoices;
         }
+
         [HttpPost("insert")]
         public async Task<IActionResult> InsertCustInvoice([FromForm] CustInvoice custInvoice)
 

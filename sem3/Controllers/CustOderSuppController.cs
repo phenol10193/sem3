@@ -48,6 +48,43 @@ namespace sem3.Controllers
             }
             return custOderSupp;
         }
+        [HttpGet("CustOderSupp")]
+        public async Task<IEnumerable<CustOderSupp>> GetCustOderSupp()
+        {
+
+            var custOderSupp = new List<CustOderSupp>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var commandText = "SELECT * FROM CustOderSupp;";
+
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            var custordsupp = new CustOderSupp
+                            {
+                                CustOderSuppId = reader.GetInt32(reader.GetOrdinal("CustOrderSuppId")),
+                                CustomerId = reader.GetInt32(reader.GetOrdinal("CustomerId")),
+                                SuppDetailId = reader.GetInt32(reader.GetOrdinal("SuppDetailId")),
+                                DeliveryDate = reader.GetDateTime(reader.GetOrdinal("DeliveryDate")),
+                                VAT = reader.GetFloat(reader.GetOrdinal("VAT")),
+                                Status = reader.GetString(reader.GetOrdinal("Status")),
+                                NumPeople = reader.GetInt32(reader.GetOrdinal("NumPeople")),
+                                Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
+                            };
+                            custOderSupp.Add(custordsupp);
+                        }
+                    }
+
+                }
+            }
+            return custOderSupp;
+        }
         [HttpPost("insert")]
 
         public async Task<IActionResult> InsertSuppInvoice([FromForm] CustOderSupp custOrdSupp)

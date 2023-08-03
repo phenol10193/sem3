@@ -30,13 +30,46 @@ namespace sem3.Controllers
                         {
                             var suppdetail = new SuppDetail
                             {
-                                SuppDetailId = reader.GetInt32(reader.GetOrdinal("SuppInvoiceId")),
+                                SuppDetailId = reader.GetInt32(reader.GetOrdinal("SuppDetailId")),
                                 SupplierId = reader.GetInt32(reader.GetOrdinal("SupplierId")),
-                                NameDetail = reader.GetString(reader.GetOrdinal("ListRoom")),
+                                NameDetail = reader.GetString(reader.GetOrdinal("NameDetail")),
                                 NumPeople = reader.GetInt32(reader.GetOrdinal("NumPeople")),
                                 CustomerCost = reader.GetFloat(reader.GetOrdinal("CustomerCost")),
                                 SupplierCost= reader.GetFloat(reader.GetOrdinal("SupplierCost")),
                                 Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
+                            };
+                            suppdetails.Add(suppdetail);
+                        }
+                    }
+
+                }
+            }
+            return suppdetails;
+        }
+        [HttpGet("selectNameDetail")]
+        public async Task<IEnumerable<SuppDetail>> GetSuppDetail()
+        {
+            var suppdetails = new List<SuppDetail>();
+
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var commandText = "SELECT SuppDetailId, NameDetail FROM SuppDetail;";
+
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            var suppdetail = new SuppDetail
+                            {
+                                SuppDetailId = reader.GetInt32(reader.GetOrdinal("SuppDetailId")),
+                               
+                                NameDetail = reader.GetString(reader.GetOrdinal("NameDetail")),
+                                
                             };
                             suppdetails.Add(suppdetail);
                         }
