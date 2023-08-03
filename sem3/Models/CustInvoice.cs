@@ -14,7 +14,7 @@ namespace sem3.Models
         [Required]
         public int? RoomId { get; set; }
         [Required]
-        public double? Vat { get; set; }
+        public double? VAT { get; set; }
         [Required]
         public string? ListRoom { get; set; }
         

@@ -24,8 +24,11 @@
                     <input type="number" class="form-control form-control-lg" id="CustomerId" placeholder="Enter Customer Id " name="CustomerId" >
                   </div>
                   <div class="form-group">
-                    <label for="SuppDetailId">SuppDetail Id:</label>
-                    <input type="number" class="form-control form-control-lg" id="SuppDetailId" placeholder="Enter SuppDetail Id" name="SuppDetailId">
+                    <div class="form-group">
+                      <label for="NameDetail">Name Detail :</label>
+                      <select id="detailSelect" class="form-control form-control-lg">
+                        <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
+                      </select>
                   </div>
                   <div class="form-group">
                     <label for="DeliveryDate">Delivery Date :</label>
@@ -51,6 +54,33 @@
         </div>
       </div>
   <script>
+         function selectNameDetail(){
+    fetch('https://localhost:7252/api/SuppDetail/selectNameDetail')
+    .then(response => response.json())
+    .then(suppDetails => {
+      const selectElement = document.getElementById('detailSelect');
+      // Thêm tùy chọn mời chọn đầu tiên
+      const defaultOption = document.createElement('option');
+      defaultOption.text = 'Mời bạn chọn';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectElement.add(defaultOption);
+      
+      // Tạo các tùy chọn từ danh sách các dịch vụ
+      suppDetails.forEach(suppDetail => {
+        const option = document.createElement('option');
+        option.value = suppDetail.suppDetailId;
+        option.textContent = suppDetail.nameDetail;
+        selectElement.appendChild(option);
+      });
+    })
+
+  }
+     // Gọi hàm selectNameDetail khi trang web được tải
+      window.onload = selectNameDetail();
+
+
+
    function insertCustOderSupp(event) {
         event.preventDefault();
 

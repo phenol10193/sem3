@@ -44,6 +44,37 @@ namespace sem3.Controllers
             }
             return categories;
         }
+        [HttpGet("Categories")]
+        public async Task<IEnumerable<Category>> GetCategoriesName()
+        {
+            var categories = new List<Category>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var commandText = "SELECT CategoryId,Name FROM Category;";
+
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            var category = new Category
+                            {
+                                CategoryId = reader.GetInt32(reader.GetOrdinal("CategoryId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                               
+                            };
+                            categories.Add(category);
+                        }
+                    }
+
+                }
+            }
+            return categories;
+        }
 
         [HttpPost("insert")]
         public async Task<IActionResult> InsertCategory([FromForm] Category category)

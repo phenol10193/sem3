@@ -28,8 +28,10 @@
                     <input type="number" class="form-control form-control-lg" id="Price" name="Price">
                   </div>
                   <div class="form-group">
-                    <label for="CategoryId">Category Id :</label>
-                    <input type="number" class="form-control form-control-lg" id="CategoryId" name="CategoryId">
+                    <label for="CategoryName">Category Name :</label>
+                    <select id="categorySelect" class="form-control form-control-lg">
+                      <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
+                    </select>
                   </div>
                   <div class="form-group">
                     <label for="SupplierId">Supplier Id :</label>
@@ -43,6 +45,30 @@
         </div>
       </div>
   <script>
+    function selectCategoryName(){
+    fetch('https://localhost:7252/api/Category/Categories')
+    .then(response => response.json())
+    .then(categories => {
+      const selectElement = document.getElementById('categorySelect');
+      // Thêm tùy chọn mời chọn đầu tiên
+      const defaultOption = document.createElement('option');
+      defaultOption.text = 'Mời bạn chọn';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectElement.add(defaultOption);
+      
+      // Tạo các tùy chọn từ danh sách các dịch vụ
+      categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.categoryId;
+        option.textContent = category.name;
+        selectElement.appendChild(option);
+      });
+    })
+
+  }
+     // Gọi hàm selectCategoryName khi trang web được tải
+      window.onload = selectCategoryName();
    function insertSuppMenu(event) {
         event.preventDefault();
 

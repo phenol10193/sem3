@@ -8,11 +8,13 @@ namespace sem3.Models
         [Required]
         public string? ItemName { get; set; }
         [Required]
-        public float Price { get; set; }
+        public float? Price { get; set; }
         [Required]    
         public int CategoryId { get; set; }
         [Required]
         public int SupplierId { get; set; }
+        [Required]
+        public string? UrlImage { get; set; }
         public bool Flag { get; set; }
         public  Category? Category { get; set; }
 

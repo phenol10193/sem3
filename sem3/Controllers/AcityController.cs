@@ -42,6 +42,37 @@ namespace sem3.Controllers
             }
             return Acitys;
         }
+        [HttpGet("AcityName")]
+        public async Task<IEnumerable<Acity>> GetAcities()
+        {
+            var Acitys = new List<Acity>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var commandText = "SELECT AcityId,CityName FROM Acity;";
+
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            var city = new Acity
+                            {
+                                AcityId = reader.IsDBNull(reader.GetOrdinal("AcityId")) ? 0 : reader.GetInt32(reader.GetOrdinal("AcityId")),
+                                CityName = reader.IsDBNull(reader.GetOrdinal("CityName")) ? string.Empty : reader.GetString(reader.GetOrdinal("CityName")),
+                              
+                            };
+                            Acitys.Add(city);
+                        }
+                    }
+
+                }
+            }
+            return Acitys;
+        }
 
         [HttpPost("insert")]
         public async Task<IActionResult> InsertAcity([FromForm] Acity acity)

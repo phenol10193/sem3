@@ -14,10 +14,11 @@ namespace sem3.Models
 
         public bool? Flag { get; set; }
 
-        public List<CustOderSupp>? CustOderSupp { get; set; }
+        public CustOderSupp? CustOderSupp { get; set; }
 
-        public SuppMenu? MenuItem { get; set; }
+        public SuppMenu? SuppMenu { get; set; }
 
         public Room? Room { get; set; }
+        public string ItemName { get; internal set; }
     }
 }
