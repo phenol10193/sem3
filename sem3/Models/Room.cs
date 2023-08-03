@@ -10,7 +10,7 @@ namespace sem3.Models
         [Required]
         public int? Capacity { get; set; }
         [Required]
-        public float? RoomPrice { get; set; }
+        public double? RoomPrice { get; set; }
         [Required]
         public int? ServiceId { get;set; }
         public bool Flag { get; set; }
