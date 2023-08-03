@@ -8,7 +8,7 @@ namespace sem3.Models
         [Required]
         public int CustomerId { get; set; }
         [Required]
-        public int SuppDetailId { get; set; }
+        public int RoomId { get; set; }
         [Required]
         public DateTime DeliveryDate { get; set; }
         [Required]

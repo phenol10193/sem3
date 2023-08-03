@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Insert SuppInvoice</title>
+    <title>Insert Room</title>
 </head>
 
 <body>
@@ -15,30 +15,32 @@
           <div class="col-md-6">
             <div class="card">
               <div class="card-header">
-                Insert SuppInvoice
+                Insert Room
               </div>
               <div class="card-body">
-                <form id="SuppInvoiceform" enctype="multipart/form-data" onsubmit="insertSuppInvoice(event)">
+                <form id="Roomform" enctype="multipart/form-data" onsubmit="insertRoom(event)">
                   <div class="form-group" >
-                    <label for="SuppInvoiceDate">Supplier Invoice Date:</label>
-                    <input type="date" class="form-control form-control-lg" id="SuppInvoiceDate" placeholder="Enter SuppInvoice Date" name="SuppInvoiceDate" required>
+                    <label for="RoomName">Room Name:</label>
+                    <input type="text" class="form-control form-control-lg" id="RoomName" placeholder="Enter Room Name " name="RoomName" >
+                  </div>
+                  <div class="form-group">
+                    <label for="Capacity"> Capacity:</label>
+                    <input type="number" class="form-control form-control-lg" id="Capacity" placeholder="Enter Capacity" name="Capacity" step="1" min="0">
+                  </div>
+                  <div class="form-group">
+                    <label for="RoomPrice">Room Price :</label>
+                    <input type="number" class="form-control form-control-lg" id="RoomPrice"  name="RoomPrice" step="0.01" min="0">
                   </div>
                   <div class="form-group">
                     <div class="form-group">
-                      <label for="SName">SupplierName :</label>
-                      <select id="SupplierSelect" class="form-control form-control-lg">
+                      <label for="Service Name"> Service Name :</label>
+                      <select id="ServiceSelect" class="form-control form-control-lg">
                         <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
                       </select>
                   </div>
-                  <div class="form-group">
-                    <label for="ListRoom">List Room:</label>
-                    <input type="text" class="form-control form-control-lg" id="ListRoom" placeholder="Enter List Room" name="ListRoom">
-                  </div>
-                  <div class="form-group">
-                    <label for="PersonInvoice">Person Invoice:</label>
-                    <input type="text" class="form-control form-control-lg" id="PersonInvoice" placeholder="Enter Person Invoice " name="PersonInvoice">
-                  </div>
-
+                  
+                  
+                  
                   <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                 </form>
               </div>
@@ -47,11 +49,11 @@
         </div>
       </div>
   <script>
-  function selectSupplierName(){
-    fetch('https://localhost:7252/api/Supplier/selectSName')
+         function selectNameService(){
+    fetch('https://localhost:7252/api/Service/selectServiceName')
     .then(response => response.json())
-    .then(suppliers => {
-      const selectElement = document.getElementById('SupplierSelect');
+    .then(Services => {
+      const selectElement = document.getElementById('ServiceSelect');
       // Thêm tùy chọn mời chọn đầu tiên
       const defaultOption = document.createElement('option');
       defaultOption.text = 'Mời bạn chọn';
@@ -60,32 +62,34 @@
       selectElement.add(defaultOption);
       
       // Tạo các tùy chọn từ danh sách các dịch vụ
-      suppliers.forEach(supplier => {
+      Services.forEach(Service => {
         const option = document.createElement('option');
-        option.value = supplier.supplierId;
-        option.textContent = supplier.sName;
-        option.setAttribute('id', 'SupplierId');
+        option.value = Service.serviceId;
+        option.textContent = Service.serviceName;
         selectElement.appendChild(option);
       });
     })
 
   }
-  // Gọi hàm selectSupplierName khi trang web được tải
-      window.onload = selectSupplierName();
+     // Gọi hàm selectNameService khi trang web được tải
+      window.onload = selectNameService();
 
-   function insertSuppInvoice(event) {
+
+
+   function insertRoom(event) {
         event.preventDefault();
 
         var formData = new FormData();
 
-        formData.append("SuppInvoiceDate", $("#SuppInvoiceDate").val());
-        formData.append("SupplierId", $("#SupplierId").val());
-        formData.append("ListRoom", $("#ListRoom").val());
-        formData.append("PersonInvoice", $("#PersonInvoice").val());
+        formData.append("RoomName", $("#RoomName").val());
+        formData.append("Capacity", $("#Capacity").val());
+        formData.append("RoomPrice", $("#RoomPrice").val());
+        formData.append("ServiceId", $("#ServiceId").val());
+
         
 
         $.ajax({
-          url: "https://localhost:7252/api/SuppInvoice/insert",
+          url: "https://localhost:7252/api/Room/insert",
           type: "POST",
           data: formData,
           processData: false,
@@ -93,7 +97,7 @@
           success: function (data) {
             alert("insert  successful!");
            
-            window.location.href = "SuppInvoicead.html";
+            window.location.href = "Roomad.html";
           },
           error: function (error) {
             alert("error can't insert. Please try again.");

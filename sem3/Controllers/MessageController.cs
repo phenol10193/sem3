@@ -33,7 +33,8 @@ namespace sem3.Controllers
                             {
                                 MessageId = reader.GetInt32(reader.GetOrdinal("MessageId")),
                                 CustomerId = reader.GetInt32(reader.GetOrdinal("CustomerId")),
-                                CContent = reader.GetString(reader.GetOrdinal("CContent")),
+                                SupplierId=reader.GetInt32(reader.GetOrdinal("SupplierId")),
+                                Content = reader.GetString(reader.GetOrdinal("Content")),
                                 SentDate = reader.GetDateTime(reader.GetOrdinal("SentDate")),
                                 Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
                             };
@@ -55,12 +56,13 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO Message(CustomerId, CContent, SentDate) VALUES (@MenuItemId, @CustOrderSuppId)";
+                var commandText = "INSERT INTO Message(CustomerId, SupplierId, Content, SentDate ) VALUES (@CustomerId, @SupplierId, @Content, @SentDate )";
                                   
                 using (var command = new SqlCommand(commandText, connection))
                 {
                     command.Parameters.AddWithValue("@CustomerId", message.CustomerId);
-                    command.Parameters.AddWithValue("@CContent", message.CContent);
+                    command.Parameters.AddWithValue("@SupplierId", message.SupplierId);
+                    command.Parameters.AddWithValue("@Content", message.Content);
                     command.Parameters.AddWithValue("@SentDate", message.SentDate);
                     
 
@@ -82,13 +84,14 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                string query = "UPDATE Message SET CustomerId = @CustomerId, CContent = @CContent, SentDate=@SentDate " +
+                string query = "UPDATE Message SET CustomerId = @CustomerId, SupplierId = @SupplierId, Content = @Content, SentDate = @SentDate " +
                                 "WHERE MessageId = @MessageId";
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     cmd.Parameters.AddWithValue("@CustomerId", Message.CustomerId);
-                    cmd.Parameters.AddWithValue("@CContent", Message.CContent);
+                    cmd.Parameters.AddWithValue("@SupplierId",Message.SupplierId);
+                    cmd.Parameters.AddWithValue("@Content", Message.Content);
                     cmd.Parameters.AddWithValue("@SentDate", Message.SentDate);
                     cmd.Parameters.AddWithValue("@MessageId", Message.MessageId);
                     await cmd.ExecuteNonQueryAsync();

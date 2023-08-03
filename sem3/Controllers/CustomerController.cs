@@ -56,6 +56,41 @@ namespace sem3.Controllers
             }
             return customers;
         }
+
+        [HttpGet("Selectcustomer")]
+        public async Task<IEnumerable<Customer>> GetCustomer()
+        {
+            var customers = new List<Customer>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var commandText = "SELECT CustomerId, FirstName, MiddleName, LastName, PhoneNumber  FROM Customer;";
+
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            var customer = new Customer
+                            {
+                                CustomerId = reader.GetInt32(reader.GetOrdinal("CustomerId")),
+                                FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                MiddleName = reader.GetString(reader.GetOrdinal("MiddleName")),
+                                LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber")),
+                               
+                            };
+                            customers.Add(customer);
+                        }
+                    }
+
+                }
+            }
+            return customers;
+        }
         [HttpGet("{CustomerId}")]
         public async Task<Customer> GetCustomer(int CustomerId)
         {
@@ -129,7 +164,7 @@ namespace sem3.Controllers
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
-                    string hashedPassword = HashPassword(customer.Password);
+                    string hashedPassword = HashPassword(password: customer.Password);
                     // SQL Injection
                     cmd.Parameters.AddWithValue("@FirstName", customer.FirstName);
                     cmd.Parameters.AddWithValue("@MiddleName", customer.MiddleName);

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Update SuppInvoice</title>
+    <title>Update Service</title>
 </head>
 
 <body>
@@ -15,16 +15,21 @@
           <div class="col-md-6">
             <div class="card">
               <div class="card-header">
-                Update SuppInvoice
+                Update Service
               </div>
               <div class="card-body">
-                <form id="SuppInvoiceFormUpdate"   onsubmit="updateSuppInvoice(event)" >
+                <form id="ServiceFormUpdate"   onsubmit="updateService(event)" ">
                   <div class="form-group">
-                  <input type="hidden" id="SuppInvoiceId" name="SuppInvoiceId" >
+                  <input type="hidden" id="ServiceId" name="ServiceId" >
                   </div>
                   <div class="form-group" >
-                    <label for="SuppInvoiceDate">Supplier Invoice Date:</label>
-                    <input type="date" class="form-control form-control-lg" id="SuppInvoiceDate" placeholder="Enter SuppInvoice Date" name="SuppInvoiceDate" required>
+                    <label for="ServiceName">Service Name:</label>
+                    <input type="text" class="form-control form-control-lg" id="ServiceName" placeholder="Enter  Service Name" name="ServiceName">
+                  </div>
+                  <div class="form-group">
+                    <label for="Description">Description :</label>
+                    <input type="text" class="form-control form-control-lg" id="Description" placeholder="Description" name="Description" >
+                  </div>         
                   </div>
                   <div class="form-group">
                     <label for="SName">SupplierName :</label>
@@ -32,16 +37,7 @@
                       <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
                     </select>
                   </div>
-                  <div class="form-group">
-                    <label for="ListRoom">List Room:</label>
-                    <input type="text" class="form-control form-control-lg" id="ListRoom" placeholder="Enter List Room" name="ListRoom">
-                  </div>
-                  <div class="form-group">
-                    <label for="PersonInvoice">Person Invoice:</label>
-                    <input type="text" class="form-control form-control-lg" id="PersonInvoice" placeholder="Enter Person Invoice " name="PersonInvoice">
-                  </div>
-                  
-                  <button id="Update" type="submit" class="btn btn-primary btn-lg btn-block">Update</button>
+                  <button id="update" type="submit" class="btn btn-primary btn-lg btn-block">Update</button>
                 </form>
               </div>
             </div>
@@ -49,7 +45,8 @@
         </div>
       </div>
   <script>
-  function selectSupplierName(){
+     
+     function selectSupplierName(){
     fetch('https://localhost:7252/api/Supplier/selectSName')
     .then(response => response.json())
     .then(suppliers => {
@@ -74,41 +71,31 @@
      // Gọi hàm selectSupplierName khi trang web được tải
       window.onload = selectSupplierName();
 
-  
 
     // Lấy thông tin về danh mục được chọn từ localStorage
-    const selectedSuppInvoice = JSON.parse(localStorage.getItem('selectedSuppInvoice'));
+  const selectedService = JSON.parse(localStorage.getItem('selectedService'));
 
-    // Hiển thị thông tin của danh mục trong các trường input
-    document.getElementById('SuppInvoiceId').value = selectedSuppInvoice.suppInvoiceId;
-    document.getElementById('SuppInvoiceDate').value = selectedSuppInvoice.suppInvoiceDate;
-    document.getElementById('SupplierSelect').value = selectedSuppInvoice.supplierId ;
-    document.getElementById('ListRoom').value = selectedSuppInvoice.listRoom;
-    document.getElementById('PersonInvoice').value = selectedSuppInvoice.personInvoice;
- 
-   function updateSuppInvoice(event) {
+  // Hiển thị thông tin của danh mục trong các trường input
+  document.getElementById('ServiceId').value = selectedService.serviceId;
+  document.getElementById('ServiceName').value = selectedService.serviceName;
+  document.getElementById('Description').value = selectedService.description;
+  document.getElementById('SupplierSelect').value = selectedService.supplierId;
+   function updateService(event) {
     event.preventDefault();
-
     
-    var suppInvoiceId = $("#SuppInvoiceId").val();
-    var suppInvoiceDate = $("#SuppInvoiceDate").val();
+    var serviceId = $("#ServiceId").val();
+    var serviceName = $("#ServiceName").val();
+    var description = $("#Description").val();
     var supplierId = $("#SupplierSelect").val();
-    var listRoom = $("#ListRoom").val();
-    var personInvoice = $("#PersonInvoice").val();
-    
 
-    
-    
     var formData = new FormData();
-    
-    formData.append("SuppInvoiceDate", suppInvoiceDate);
+    formData.append("ServiceId", serviceId);
+    formData.append("ServiceName", serviceName);
+    formData.append("Description", description);
     formData.append("SupplierId", supplierId);
-    formData.append("ListRoom", listRoom);
-    formData.append("PersonInvoice", personInvoice);
-    formData.append("SuppInvoiceId", suppInvoiceId);
     // Thêm dataType vào phương thức ajax
     $.ajax({
-      url: "https://localhost:7252/api/SuppInvoice/update",
+      url: "https://localhost:7252/api/Service/update",
       type: "PUT",
       data: formData,
       processData: false,
@@ -116,7 +103,7 @@
       
       success: function (data) {
         alert(" update successful!");
-        window.location.href = "SuppInvoicead.html";
+        window.location.href = "Servicead.html";
       },
       error: function (error) {
         alert("Có lỗi xảy ra khi cập nhật thông tin.");

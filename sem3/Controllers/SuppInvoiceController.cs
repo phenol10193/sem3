@@ -57,7 +57,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO SuppInvoice(SupInvoiceDate, SupplierId, ListRoom, PersonInvoice) VALUES  (@SupInvoiceDate, @SupplierId, @ListRoom, @PersonInvoice)";
+                var commandText = "INSERT INTO SuppInvoice(SuppInvoiceDate, SupplierId, ListRoom, PersonInvoice) VALUES  (@SuppInvoiceDate, @SupplierId, @ListRoom, @PersonInvoice)";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
@@ -84,7 +84,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                string query = "UPDATE SuppInvoice SET SuppInvoiceDate = @SuppInvoiceDate, SupplierId = @SupplierId, ListRoom = @ListRoom, PersonInvoice = @PersonInvoice" +
+                string query = "UPDATE SuppInvoice SET SuppInvoiceDate = @SuppInvoiceDate, SupplierId = @SupplierId, ListRoom = @ListRoom, PersonInvoice = @PersonInvoice " +
                                 "WHERE SuppInvoiceId = @SuppInvoiceId";
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))

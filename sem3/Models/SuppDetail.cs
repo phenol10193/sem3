@@ -12,9 +12,9 @@ namespace sem3.Models
         [Required]
         public int NumPeople { get; set; }
         [Required]
-        public float CustomerCost { get; set; }
+        public double CustomerCost { get; set; }
         [Required]
-        public float SupplierCost { get; set; }
+        public double SupplierCost { get; set; }
         public bool Flag { get; set; }
         public  Supplier? Supplier { get; set; }
     }
