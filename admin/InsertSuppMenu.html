@@ -64,6 +64,7 @@
         const option = document.createElement('option');
         option.value = category.categoryId;
         option.textContent = category.name;
+        option.setAttribute('id', 'CategoryId');
         selectElement.appendChild(option);
       });
     })

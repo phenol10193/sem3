@@ -22,12 +22,17 @@
                   <div class="form-group">
                   <input type="hidden" id="CustOderSuppId" name="CustOderSuppId" >
                   <div class="form-group" >
-                    <label for="CustomerId">Customer Id:</label>
-                    <input type="number" class="form-control form-control-lg" id="CustomerId" placeholder="Enter Customer Id " name="CustomerId" >
+                    <label for="Name">Customer Name :</label>
+                    <select id="CustomerSelect" class="form-control form-control-lg">
+                      <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
+                    </select>
                   </div>
                   <div class="form-group">
-                    <label for="SuppDetailId">SuppDetail Id:</label>
-                    <input type="number" class="form-control form-control-lg" id="SuppDetailId" placeholder="Enter SuppDetail Id" name="SuppDetailId">
+                    <div class="form-group">
+                      <label for="RoomName">Name room :</label>
+                      <select id="roomSelect" class="form-control form-control-lg">
+                        <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
+                      </select>
                   </div>
                   <div class="form-group">
                     <label for="DeliveryDate">Delivery Date :</label>
@@ -35,7 +40,7 @@
                   </div>
                   <div class="form-group">
                     <label for="VAT"> VAT:</label>
-                    <input type="number" class="form-control form-control-lg" id="VAT" placeholder="Enter VAT" name="VAT" step="0.01">
+                    <input type="number" class="form-control form-control-lg" id="VAT" placeholder="Enter VAT" name="VAT" step="0.01" min="0">
                   </div>
                   <div class="form-group">
                     <label for="Status">Status:</label>
@@ -43,7 +48,7 @@
                   </div>
                   <div class="form-group">
                     <label for="NumPeople">Number People:</label>
-                    <input type="number" class="form-control form-control-lg" id="NumPeople" placeholder="Enter Number People " name="NumPeople">
+                    <input type="number" class="form-control form-control-lg" id="NumPeople" placeholder="Enter Number People " name="NumPeople" step="1" min="0">
                   </div>
                   <button id="Update" type="submit" class="btn btn-primary btn-lg btn-block">Update</button>
                 </form>
@@ -53,13 +58,65 @@
         </div>
       </div>
   <script>
+ function selectCustomerName(){
+    fetch('https://localhost:7252/api/Customer/Selectcustomer')
+    .then(response => response.json())
+    .then(customers => {
+      const selectElement = document.getElementById('CustomerSelect');
+      // Thêm tùy chọn mời chọn đầu tiên
+      const defaultOption = document.createElement('option');
+      defaultOption.text = 'Mời bạn chọn';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectElement.add(defaultOption);
+      
+      // Tạo các tùy chọn từ danh sách các dịch vụ
+      customers.forEach(customer => {
+        const option = document.createElement('option');
+        option.value = customer.customerId;
+        option.textContent = customer.firstName + " "+ customer.middleName + " "+customer.lastName +"-"+customer.phoneNumber;
+        option.setAttribute('id', 'CustomerId');
+        selectElement.appendChild(option);
+      });
+    })
+  }
+ // Gọi hàm selectCustomerName khi trang web được tải
+ window.onload = selectCustomerName();
+
+         function selectRoomName(){
+    fetch('https://localhost:7252/api/Room/selectRoomName')
+    .then(response => response.json())
+    .then(Rooms => {
+      const selectElement = document.getElementById('roomSelect');
+      // Thêm tùy chọn mời chọn đầu tiên
+      const defaultOption = document.createElement('option');
+      defaultOption.text = 'Mời bạn chọn';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectElement.add(defaultOption);
+      
+      // Tạo các tùy chọn từ danh sách các dịch vụ
+      Rooms.forEach(Room => {
+        const option = document.createElement('option');
+        option.value = Room.roomId;
+        option.textContent = Room.roomName;
+        option.setAttribute('id', 'RoomId');
+        selectElement.appendChild(option);
+      });
+    })
+
+  }
+     // Gọi hàm selectRoomName khi trang web được tải
+      window.onload = selectRoomName();
+
+
     // Lấy thông tin về danh mục được chọn từ localStorage
   const selectedCustOderSupp = JSON.parse(localStorage.getItem('selectedCustOderSupp'));
 
   // Hiển thị thông tin của danh mục trong các trường input
   document.getElementById('CustOderSuppId').value = selectedCustOderSupp.custOderSuppId;
-  document.getElementById('CustomerId').value = selectedCustOderSupp.customerId;
-  document.getElementById('SuppDetailId').value = selectedCustOderSupp.suppDetailId;
+  document.getElementById('CustomerSelect').value = selectedCustOderSupp.customerId;
+  document.getElementById('roomSelect').value = selectedCustOderSupp.roomId;
   document.getElementById('DeliveryDate').value = selectedCustOderSupp.deliveryDate;
   document.getElementById('VAT').value = selectedCustOderSupp.vat;
   document.getElementById('Status').value = selectedCustOderSupp.status;
@@ -71,8 +128,8 @@
 
     
     var custOderSuppId = $("#CustOderSuppId").val();
-    var customerId = $("#CustomerId").val();
-    var suppDetailId = $("#SuppDetailId").val();
+    var customerId = $("#CustomerSelect").val();
+    var roomId = $("#roomSelect").val();
     var deliveryDate = $("#DeliveryDate").val();
     var vat = $("#VAT").val();
     var status = $("#Status").val();
@@ -82,7 +139,7 @@
     var formData = new FormData();
     formData.append("CustOderSuppId", custOderSuppId);
     formData.append("CustomerId", customerId);
-    formData.append("SuppDetailId", suppDetailId);
+    formData.append("RoomId", roomId);
     formData.append("DeliveryDate", deliveryDate);
     formData.append("VAT", vat);
     formData.append("Status", status);

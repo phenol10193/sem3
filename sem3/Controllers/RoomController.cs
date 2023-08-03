@@ -34,9 +34,41 @@ namespace sem3.Controllers
                                 RoomId = reader.GetInt32(reader.GetOrdinal("RoomId")),
                                 RoomName = reader.GetString(reader.GetOrdinal("RoomName")),
                                 Capacity = reader.GetInt32(reader.GetOrdinal("Capacity")),
-                                RoomPrice = reader.GetFloat(reader.GetOrdinal("RoomPrice")),
+                                RoomPrice = reader.GetDouble(reader.GetOrdinal("RoomPrice")),
                                 ServiceId = reader.GetInt32(reader.GetOrdinal("ServiceId")),
                                 Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
+                            };
+                            Rooms.Add(Room);
+                        }
+                    }
+
+                }
+            }
+
+            return Rooms;
+        }
+        [HttpGet("selectRoomName")]
+        public async Task<IEnumerable<Room>> GetRoom()
+        {
+            var Rooms = new List<Room>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var commandText = "SELECT RoomId, RoomName FROM Room;";
+
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            var Room = new Room
+                            {
+                                RoomId = reader.GetInt32(reader.GetOrdinal("RoomId")),
+                                RoomName = reader.GetString(reader.GetOrdinal("RoomName")),
+                    
                             };
                             Rooms.Add(Room);
                         }

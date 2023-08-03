@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>Insert Room</title>
+    <title>Update Room</title>
 </head>
 
 <body>
@@ -15,10 +15,13 @@
           <div class="col-md-6">
             <div class="card">
               <div class="card-header">
-                Insert Room
+                Update Room
               </div>
               <div class="card-body">
-                <form id="Roomform" enctype="multipart/form-data" onsubmit="insertRoom(event)">
+                <form id="RoomFormUpdate"   onsubmit="updateRoom(event)" >
+                  <div class="form-group">
+                  <input type="hidden" id="RoomId" name="RoomId" >
+                  </div>
                   <div class="form-group" >
                     <label for="RoomName">Room Name:</label>
                     <input type="text" class="form-control form-control-lg" id="RoomName" placeholder="Enter Room Name " name="RoomName" >
@@ -39,9 +42,7 @@
                       </select>
                   </div>
                   
-                  
-                  
-                  <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                  <button id="Update" type="submit" class="btn btn-primary btn-lg btn-block">Update</button>
                 </form>
               </div>
             </div>
@@ -49,7 +50,7 @@
         </div>
       </div>
   <script>
-         function selectNameService(){
+     function selectNameService(){
     fetch('https://localhost:7252/api/Service/selectServiceName')
     .then(response => response.json())
     .then(Services => {
@@ -66,7 +67,6 @@
         const option = document.createElement('option');
         option.value = Service.serviceId;
         option.textContent = Service.serviceName;
-        option.setAttribute('id', 'ServiceId');
         selectElement.appendChild(option);
       });
     })
@@ -76,37 +76,55 @@
       window.onload = selectNameService();
 
 
+    // Lấy thông tin về danh mục được chọn từ localStorage
+    const selectedRoom = JSON.parse(localStorage.getItem('selectedRoom'));
 
-   function insertRoom(event) {
-        event.preventDefault();
+    // Hiển thị thông tin của danh mục trong các trường input
+    document.getElementById('RoomId').value = selectedRoom.roomId;
+    document.getElementById('RoomName').value = selectedRoom.roomName;
+    document.getElementById('Capacity').value = selectedRoom.capacity ;
+    document.getElementById('RoomPrice').value = selectedRoom.roomPrice;
+    document.getElementById('ServiceSelect').value = selectedRoom.serviceId;
+ 
+   function updateRoom(event) {
+    event.preventDefault();
 
-        var formData = new FormData();
+    
+    var roomId = $("#RoomId").val();
+    var roomName = $("#RoomName").val();
+    var capacity = $("#Capacity").val();
+    var roomPrice = $("#RoomPrice").val();
+    var serviceId = $("#ServiceSelect").val();
+    
 
-        formData.append("RoomName", $("#RoomName").val());
-        formData.append("Capacity", $("#Capacity").val());
-        formData.append("RoomPrice", $("#RoomPrice").val());
-        formData.append("ServiceId", $("#ServiceId").val());
-
-        
-
-        $.ajax({
-          url: "https://localhost:7252/api/Room/insert",
-          type: "POST",
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function (data) {
-            alert("insert  successful!");
-           
-            window.location.href = "Roomad.html";
-          },
-          error: function (error) {
-            alert("error can't insert. Please try again.");
-            console.error("Error :", error);
-          }
-        });
+    
+    
+    var formData = new FormData();
+    
+    formData.append("RoomName", roomName);
+    formData.append("Capacity", capacity);
+    formData.append("RoomPrice", roomPrice);
+    formData.append("ServiceId", serviceId);
+    formData.append("RoomId", roomId);
+    // Thêm dataType vào phương thức ajax
+    $.ajax({
+      url: "https://localhost:7252/api/Room/update",
+      type: "PUT",
+      data: formData,
+      processData: false,
+      contentType: false,
+      
+      success: function (data) {
+        alert(" update successful!");
+        window.location.href = "Roomad.html";
+      },
+      error: function (error) {
+        alert("Có lỗi xảy ra khi cập nhật thông tin.");
+        console.error("Error :", error);
       }
-  
+    });
+}
   </script>
+ 
 </body>
 </html>

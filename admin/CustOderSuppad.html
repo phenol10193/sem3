@@ -11,6 +11,7 @@
             background-color: #343a40;
             color: #ffffff;
             height: 100vh;
+            overflow-y: auto; 
             position: fixed;
             top: 70px;
             left: 0;
@@ -72,7 +73,7 @@
     <div>
         <div class="sidebar d-flex flex-column align-items-center ">
             <ul class="nav flex-column">
-                
+               
                 <li class="nav-item">
                     <a class="nav-link" href="Acityad.html">Acity</a>
                 </li>
@@ -90,6 +91,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="Messagead.html">Message </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Roomad.html">Room </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Servicead.html">Service</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="SuppDetailad.html">Supplier Detail</a>
@@ -128,7 +135,7 @@
                 <tr>
                     <th scope="col">Customer Oder Supplier Id</th>
                     <th scope="col">Customer Id</th>
-                    <th scope="col">SuppDetail Id</th>
+                    <th scope="col">Room Id</th>
                     <th scope="col">Delivery Date</th>
                     <th scope="col">VAT</th>
                     <th scope="col">Status</th>
@@ -159,7 +166,7 @@
 
                         row.insertCell(0).textContent = CustOderSupp.custOderSuppId;
                         row.insertCell(1).textContent = CustOderSupp.customerId;
-                        row.insertCell(2).textContent = CustOderSupp.suppDetailId;
+                        row.insertCell(2).textContent = CustOderSupp.roomId;
                         row.insertCell(3).textContent = CustOderSupp.deliveryDate;
                         row.insertCell(4).textContent = CustOderSupp.vat;
                         row.insertCell(5).textContent = CustOderSupp.status;

@@ -9,9 +9,41 @@ namespace sem3.Controllers
     [ApiController]
     public class ServiceController : ControllerBase
     {
-
         string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=OnlineCatere;Trusted_Connection=True;";
 
+        [HttpGet("selectServiceName")]
+
+        public async Task<IEnumerable<Service>> GetService()
+        {
+            var Services = new List<Service>();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var commandText = "SELECT ServiceId, ServiceName FROM Service;";
+
+                using (var command = new SqlCommand(commandText, connection))
+                {
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            var service = new Service
+                            {
+                                ServiceId = reader.GetInt32(reader.GetOrdinal("ServiceId")),
+                                ServiceName = reader.GetString(reader.GetOrdinal("ServiceName")),
+
+                            };
+                            Services.Add(service);
+                        }
+                    }
+
+                }
+            }
+
+            return Services;
+        }
         [HttpGet("all")]
         public async Task<IEnumerable<Service>> GetServices()
         {
@@ -35,7 +67,7 @@ namespace sem3.Controllers
                                 ServiceName = reader.GetString(reader.GetOrdinal("ServiceName")),
                                 Description = reader.GetString(reader.GetOrdinal("Description")),
                                 SupplierId = reader.GetInt32(reader.GetOrdinal("SupplierId")),
-                                
+
                                 Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
                             };
                             Services.Add(Service);
@@ -47,38 +79,7 @@ namespace sem3.Controllers
 
             return Services;
         }
-        [HttpGet("selectServiceName")]
-        public async Task<IEnumerable<Service>> GetService()
-        {
-            var Services = new List<Service>();
 
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                var commandText = "SELECT ServiceId, ServiceName FROM Service;";
-
-                using (var command = new SqlCommand(commandText, connection))
-                {
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (reader.Read())
-                        {
-                            var Service = new Service
-                            {
-                                ServiceId = reader.GetInt32(reader.GetOrdinal("ServiceId")),
-                                ServiceName = reader.GetString(reader.GetOrdinal("ServiceName")),
-
-                            };
-                            Services.Add(Service);
-                        }
-                    }
-
-                }
-            }
-
-            return Services;
-        }
         [HttpPost("insert")]
         public async Task<IActionResult> InsertCustInvoice([FromForm] Service Service)
 
@@ -95,7 +96,7 @@ namespace sem3.Controllers
                     command.Parameters.AddWithValue("@ServiceName", Service.ServiceName);
                     command.Parameters.AddWithValue("@Description", Service.Description);
                     command.Parameters.AddWithValue("@SupplierId", Service.SupplierId);
-                   
+
 
                     command.ExecuteNonQuery();
 
@@ -124,7 +125,7 @@ namespace sem3.Controllers
                     cmd.Parameters.AddWithValue("@Description", Service.Description);
                     cmd.Parameters.AddWithValue("@SupplierId", Service.SupplierId);
                     cmd.Parameters.AddWithValue("@ServiceId", Service.ServiceId);
-                    
+
                     await cmd.ExecuteNonQueryAsync();
                 }
             }

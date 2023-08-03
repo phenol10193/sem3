@@ -20,13 +20,15 @@
               <div class="card-body">
                 <form id="CustOderSuppform" enctype="multipart/form-data" onsubmit="insertCustOderSupp(event)">
                   <div class="form-group" >
-                    <label for="CustomerId">Customer Id:</label>
-                    <input type="number" class="form-control form-control-lg" id="CustomerId" placeholder="Enter Customer Id " name="CustomerId" >
+                    <label for="Name">Customer Name :</label>
+                    <select id="CustomerSelect" class="form-control form-control-lg">
+                      <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
+                    </select>
                   </div>
                   <div class="form-group">
                     <div class="form-group">
-                      <label for="NameDetail">Name Detail :</label>
-                      <select id="detailSelect" class="form-control form-control-lg">
+                      <label for="RoomName">Name room :</label>
+                      <select id="roomSelect" class="form-control form-control-lg">
                         <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
                       </select>
                   </div>
@@ -36,7 +38,7 @@
                   </div>
                   <div class="form-group">
                     <label for="VAT"> VAT:</label>
-                    <input type="number" class="form-control form-control-lg" id="VAT" placeholder="Enter VAT" name="VAT" step="0.01">
+                    <input type="number" class="form-control form-control-lg" id="VAT" placeholder="Enter VAT" name="VAT" step="0.01" min="0">
                   </div>
                   <div class="form-group">
                     <label for="Status">Status:</label>
@@ -44,7 +46,7 @@
                   </div>
                   <div class="form-group">
                     <label for="NumPeople">Number People:</label>
-                    <input type="number" class="form-control form-control-lg" id="NumPeople" placeholder="Enter Number People " name="NumPeople">
+                    <input type="number" class="form-control form-control-lg" id="NumPeople" placeholder="Enter Number People " name="NumPeople" step="1" min="0">
                   </div>
                   <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                 </form>
@@ -54,11 +56,11 @@
         </div>
       </div>
   <script>
-         function selectNameDetail(){
-    fetch('https://localhost:7252/api/SuppDetail/selectNameDetail')
+     function selectCustomerName(){
+    fetch('https://localhost:7252/api/Customer/Selectcustomer')
     .then(response => response.json())
-    .then(suppDetails => {
-      const selectElement = document.getElementById('detailSelect');
+    .then(customers => {
+      const selectElement = document.getElementById('CustomerSelect');
       // Thêm tùy chọn mời chọn đầu tiên
       const defaultOption = document.createElement('option');
       defaultOption.text = 'Mời bạn chọn';
@@ -67,17 +69,43 @@
       selectElement.add(defaultOption);
       
       // Tạo các tùy chọn từ danh sách các dịch vụ
-      suppDetails.forEach(suppDetail => {
+      customers.forEach(customer => {
         const option = document.createElement('option');
-        option.value = suppDetail.suppDetailId;
-        option.textContent = suppDetail.nameDetail;
+        option.value = customer.customerId;
+        option.textContent = customer.firstName + " "+ customer.middleName + " "+customer.lastName +"-"+customer.phoneNumber;
+        option.setAttribute('id', 'CustomerId');
+        selectElement.appendChild(option);
+      });
+    })
+  }
+ // Gọi hàm selectCustomerName khi trang web được tải
+ window.onload = selectCustomerName();
+
+         function selectRoomName(){
+    fetch('https://localhost:7252/api/Room/selectRoomName')
+    .then(response => response.json())
+    .then(Rooms => {
+      const selectElement = document.getElementById('roomSelect');
+      // Thêm tùy chọn mời chọn đầu tiên
+      const defaultOption = document.createElement('option');
+      defaultOption.text = 'Mời bạn chọn';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectElement.add(defaultOption);
+      
+      // Tạo các tùy chọn từ danh sách các dịch vụ
+      Rooms.forEach(Room => {
+        const option = document.createElement('option');
+        option.value = Room.roomId;
+        option.textContent = Room.roomName;
+        option.setAttribute('id', 'RoomId');
         selectElement.appendChild(option);
       });
     })
 
   }
-     // Gọi hàm selectNameDetail khi trang web được tải
-      window.onload = selectNameDetail();
+     // Gọi hàm selectRoomName khi trang web được tải
+      window.onload = selectRoomName();
 
 
 
@@ -87,7 +115,7 @@
         var formData = new FormData();
 
         formData.append("CustomerId", $("#CustomerId").val());
-        formData.append("SuppDetailId", $("#SuppDetailId").val());
+        formData.append("RoomId", $("#RoomId").val());
         formData.append("DeliveryDate", $("#DeliveryDate").val());
         formData.append("VAT", $("#VAT").val());
         formData.append("Status", $("#Status").val());

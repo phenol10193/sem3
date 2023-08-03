@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using sem3.Models;
 using System.Data.SqlClient;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace sem3.Controllers
 {
@@ -31,11 +32,11 @@ namespace sem3.Controllers
                         {
                             var custordsupp = new CustOderSupp
                             {
-                                CustOderSuppId = reader.GetInt32(reader.GetOrdinal("CustOrderSuppId")),
+                                CustOderSuppId = reader.GetInt32(reader.GetOrdinal("CustOderSuppId")),
                                 CustomerId = reader.GetInt32(reader.GetOrdinal("CustomerId")),
-                                SuppDetailId = reader.GetInt32(reader.GetOrdinal("SuppDetailId")),
+                                RoomId=reader.GetInt32(reader.GetOrdinal("RoomId")),
                                 DeliveryDate = reader.GetDateTime(reader.GetOrdinal("DeliveryDate")),
-                                VAT = reader.GetFloat(reader.GetOrdinal("VAT")),
+                                VAT = reader.GetDouble(reader.GetOrdinal("VAT")),
                                 Status = reader.GetString(reader.GetOrdinal("Status")),
                                 NumPeople = reader.GetInt32(reader.GetOrdinal("NumPeople")),
                                 Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
@@ -48,43 +49,7 @@ namespace sem3.Controllers
             }
             return custOderSupp;
         }
-        [HttpGet("CustOderSupp")]
-        public async Task<IEnumerable<CustOderSupp>> GetCustOderSupp()
-        {
-
-            var custOderSupp = new List<CustOderSupp>();
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                var commandText = "SELECT * FROM CustOderSupp;";
-
-                using (var command = new SqlCommand(commandText, connection))
-                {
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (reader.Read())
-                        {
-                            var custordsupp = new CustOderSupp
-                            {
-                                CustOderSuppId = reader.GetInt32(reader.GetOrdinal("CustOrderSuppId")),
-                                CustomerId = reader.GetInt32(reader.GetOrdinal("CustomerId")),
-                                SuppDetailId = reader.GetInt32(reader.GetOrdinal("SuppDetailId")),
-                                DeliveryDate = reader.GetDateTime(reader.GetOrdinal("DeliveryDate")),
-                                VAT = reader.GetFloat(reader.GetOrdinal("VAT")),
-                                Status = reader.GetString(reader.GetOrdinal("Status")),
-                                NumPeople = reader.GetInt32(reader.GetOrdinal("NumPeople")),
-                                Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
-                            };
-                            custOderSupp.Add(custordsupp);
-                        }
-                    }
-
-                }
-            }
-            return custOderSupp;
-        }
+        
         [HttpPost("insert")]
 
         public async Task<IActionResult> InsertSuppInvoice([FromForm] CustOderSupp custOrdSupp)
@@ -95,12 +60,12 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                var commandText = "INSERT INTO CustOderSupp(CustomerId, SuppDetailId, DeliveryDate, VAT, Status, NumPeople) VALUES  (@CustomerId, @SuppDetailId, @DeliveryDate, @VAT, @Status, @NumPeople)";
+                var commandText = "INSERT INTO CustOderSupp(CustomerId, RoomId, DeliveryDate, VAT, Status, NumPeople) VALUES  (@CustomerId, @RoomId, @DeliveryDate, @VAT, @Status, @NumPeople)";
 
                 using (var command = new SqlCommand(commandText, connection))
                 {
                     command.Parameters.AddWithValue("@CustomerId", custOrdSupp.CustomerId);
-                    command.Parameters.AddWithValue("@SuppDetailId", custOrdSupp.SuppDetailId);
+                    command.Parameters.AddWithValue("@RoomId", custOrdSupp.RoomId);
                     command.Parameters.AddWithValue("@DeliveryDate", custOrdSupp.DeliveryDate);
                     command.Parameters.AddWithValue("@VAT", custOrdSupp.VAT);
                     command.Parameters.AddWithValue("@Status", custOrdSupp.Status);
@@ -124,13 +89,13 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                string query = "UPDATE CustOderSupp SET CustomerId = @CustomerId, SuppDetailId = @SuppDetailId, DeliveryDate = @DeliveryDate, VAT = @VAT, Status = @Status, NumPeople=@NumPeople" +
+                string query = "UPDATE CustOderSupp SET CustomerId = @CustomerId, RoomId = @RoomId, DeliveryDate = @DeliveryDate, VAT = @VAT, Status = @Status, NumPeople=@NumPeople " +
                                 "WHERE CustOderSuppId = @CustOderSuppId";
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))
                 {
                     cmd.Parameters.AddWithValue("@CustomerId", CustOderSupp.CustomerId);
-                    cmd.Parameters.AddWithValue("@SuppDetailId", CustOderSupp.SuppDetailId);
+                    cmd.Parameters.AddWithValue("@RoomId", CustOderSupp.RoomId);
                     cmd.Parameters.AddWithValue("@DeliveryDate", CustOderSupp.DeliveryDate);
                     cmd.Parameters.AddWithValue("@VAT", CustOderSupp.VAT);
                     cmd.Parameters.AddWithValue("@Status", CustOderSupp.Status);

@@ -12,7 +12,7 @@ namespace sem3.Models
         [Required]
         public DateTime DeliveryDate { get; set; }
         [Required]
-        public float VAT { get; set; }
+        public double VAT { get; set; }
         [Required]
         public string? Status { get; set; }
         [Required]
