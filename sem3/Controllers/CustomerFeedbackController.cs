@@ -63,7 +63,7 @@ namespace sem3.Controllers
                     command.Parameters.AddWithValue("@SupplierId", CustomerFeedback.SupplierId);
                     command.Parameters.AddWithValue("@CustomerId", CustomerFeedback.CustomerId);
                     command.Parameters.AddWithValue("@Comment", CustomerFeedback.Comment);
-                    command.Parameters.AddWithValue("@FeedbackDate", CustomerFeedback.FeedbackDate);
+                    command.Parameters.AddWithValue("@FeedbackDate", DateTime.Now);
 
 
                     command.ExecuteNonQuery();
@@ -92,7 +92,7 @@ namespace sem3.Controllers
                     cmd.Parameters.AddWithValue("@SupplierId", CustomerFeedback.SupplierId);
                     cmd.Parameters.AddWithValue("@CustomerId", CustomerFeedback.CustomerId);
                     cmd.Parameters.AddWithValue("@Comment", CustomerFeedback.Comment);
-                    cmd.Parameters.AddWithValue("@FeedbackDate", CustomerFeedback.FeedbackDate);
+                    cmd.Parameters.AddWithValue("@FeedbackDate", DateTime.Now);
                     cmd.Parameters.AddWithValue("@FeedbackId", CustomerFeedback.FeedbackId);
                     await cmd.ExecuteNonQueryAsync();
                 }

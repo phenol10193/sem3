@@ -37,8 +37,14 @@
                     <label for="SName">SupplierName :</label>
                     <select id="SupplierSelect" class="form-control form-control-lg">
                       <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
-                    </select>
+                    </select>   
                   </div>
+                  <input type="hidden" id="url-image" name="urlImage">
+                        <div class="form-group">
+                            <label for="image">Ảnh đại diện:</label>
+                            <img id="profileImage" alt="Profile Image" style="max-width: 200px;" />
+                            <input type="file" id="image" name="image" class="form-control">
+                        </div>
                   <button id="submit" type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
                 </form>
               </div>
@@ -72,7 +78,7 @@
   }
      // Gọi hàm selectCategoryName khi trang web được tải
       window.onload = selectCategoryName();
-
+    
       function selectSupplierName(){
     fetch('https://localhost:7252/api/Supplier/selectSName')
     .then(response => response.json())
@@ -107,7 +113,12 @@
         formData.append("Price", $("#Price").val());
         formData.append("CategoryId", $("#CategoryId").val());
         formData.append("SupplierId", $("#SupplierId").val());
-        
+        if (event.urlImage) {
+                        const imageUrl = "../" + event.urlImage;
+                        $("#profileImage").attr("src", imageUrl);
+        }
+        formData.append("UrlImage",$("#url-image").val(event.urlImage)) ;
+                
 
         $.ajax({
           url: "https://localhost:7252/api/SuppMenu/insert",

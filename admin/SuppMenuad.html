@@ -14,12 +14,13 @@
             position: fixed;
             top: 70px;
             left: 0;
-            overflow-y: auto; 
+            overflow-y: scroll; 
             width: 250px;
             padding: 1rem;
         }
 
         .sidebar .nav-link {
+           
             color: #ffffff;
             font-size: 1.2rem;
             margin-bottom: 1rem;
@@ -71,7 +72,7 @@
 
 <body>
     <div>
-        <div class="sidebar d-flex flex-column align-items-center ">
+        <div class="sidebar d-flex flex-column align-items-center " style="height: 100%">
             <ul class="nav flex-column">
                
                 <li class="nav-item">
@@ -90,6 +91,9 @@
                     <a class="nav-link" href="CustOderSuppad.html">Customer Oder Supplier</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="CustomerFeedbackad.html">Customer Feedback</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="Messagead.html">Message </a>
                 </li>
                 <li class="nav-item">
@@ -101,11 +105,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="SuppDetailad.html">Supplier Detail</a>
                 </li>
+                
                 <li class="nav-item">
                     <a class="nav-link" href="SuppInvoicead.html">Supplier Invoice</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="SuppMenuad.html">Supplier Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"></a>
                 </li>
             </ul>
         </div>
@@ -138,6 +146,7 @@
                     <th scope="col">Price</th>
                     <th scope="col">CategoryId</th>
                     <th scope="col">SupplierId</th>
+                    <th scope="col">Image Menu</th>
                     <th scope="col">Flag</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -167,11 +176,11 @@
                         row.insertCell(2).textContent = SuppMenu.price;
                         row.insertCell(3).textContent = SuppMenu.categoryId;
                         row.insertCell(4).textContent = SuppMenu.supplierId;
-
+                        row.insertCell(5).textContent= SuppMenu.urlImage;
                         if (SuppMenu.flag) {
-                            row.insertCell(5).textContent = 'Restore';
+                            row.insertCell(6).textContent = 'Restore';
                         } else {
-                            row.insertCell(5).textContent = 'Cancel';
+                            row.insertCell(6).textContent = 'Cancel';
                         }
                         // Tạo nút Update
                         const updateButton = document.createElement('button');
@@ -219,7 +228,7 @@
                        
 
                         // Thêm các nút Update và Delete vào cột Actions
-                        const actionsCell = row.insertCell(6);
+                        const actionsCell = row.insertCell(7);
                         actionsCell.appendChild(updateButton);
                         actionsCell.appendChild(deleteButton);
 
