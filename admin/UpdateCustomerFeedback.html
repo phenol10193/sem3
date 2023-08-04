@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Update CustomerFeedback</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                Update CustomerFeedback
+              </div>
+              <div class="card-body">
+                <form id="CustomerFeedbackFormUpdate"   onsubmit="updateCustomerFeedback(event)" ">
+                  <div class="form-group">
+                  <input type="hidden" id="FeedbackId" name="FeedbackId" >
+                  <div>
+                    <div class="form-group">
+                        <div class="form-group">
+                          <label for="SName">SupplierName :</label>
+                          <select id="SupplierSelect" class="form-control form-control-lg">
+                            <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
+                          </select>
+                    </div>
+                  <div class="form-group" >
+                    <label for="Name">Customer Name :</label>
+                    <select id="CustomerSelect" class="form-control form-control-lg">
+                      <!-- Các tùy chọn sẽ được tạo ở đây bằng JavaScript -->
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="Comment">Comment:</label>
+                    <input type="text" class="form-control form-control-lg" id="Comment" placeholder="Enter Comment " name="Comment">
+                  </div>
+                  <button id="Update" type="submit" class="btn btn-primary btn-lg btn-block">Update</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  <script>
+     function selectSupplierName(){
+    fetch('https://localhost:7252/api/Supplier/selectSName')
+    .then(response => response.json())
+    .then(suppliers => {
+      const selectElement = document.getElementById('SupplierSelect');
+      // Thêm tùy chọn mời chọn đầu tiên
+      const defaultOption = document.createElement('option');
+      defaultOption.text = 'Mời bạn chọn';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      selectElement.add(defaultOption);
+      
+      // Tạo các tùy chọn từ danh sách các dịch vụ
+      suppliers.forEach(supplier => {
+        const option = document.createElement('option');
+        option.value = supplier.supplierId;
+        option.textContent = supplier.sName;
+        option.setAttribute('id', 'SupplierId');
+        selectElement.appendChild(option);
+      });
+    })
+
+  }
+  // Gọi hàm selectSupplierName khi trang web được tải
+      window.onload = selectSupplierName();
+
+
+     function selectCustomerName(){
+        fetch('https://localhost:7252/api/Customer/Selectcustomer')
+        .then(response => response.json())
+        .then(customers => {
+        const selectElement = document.getElementById('CustomerSelect');
+        // Thêm tùy chọn mời chọn đầu tiên
+        const defaultOption = document.createElement('option');
+        defaultOption.text = 'Mời bạn chọn';
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        selectElement.add(defaultOption);
+        
+        // Tạo các tùy chọn từ danh sách các dịch vụ
+        customers.forEach(customer => {
+            const option = document.createElement('option');
+            option.value = customer.customerId;
+            option.textContent = customer.firstName + " "+ customer.middleName + " "+customer.lastName +"-"+customer.phoneNumber;
+            option.setAttribute('id', 'CustomerId');
+            selectElement.appendChild(option);
+        });
+    })
+  }
+ // Gọi hàm selectCustomerName khi trang web được tải
+ window.onload = selectCustomerName();
+
+
+    // Lấy thông tin về danh mục được chọn từ localStorage
+  const selectedCustomerFeedback = JSON.parse(localStorage.getItem('selectedCustomerFeedback'));
+
+  // Hiển thị thông tin của danh mục trong các trường input
+  document.getElementById('FeedbackId').value = selectedCustomerFeedback.feedbackId;
+  document.getElementById('SupplierSelect').value = selectedCustomerFeedback.supplierId;
+  document.getElementById('CustomerSelect').value = selectedCustomerFeedback.customerId;
+  document.getElementById('Comment').value = selectedCustomerFeedback.comment;
+
+
+
+   function updateCustomerFeedback(event) {
+    event.preventDefault();
+
+    
+    var feedbackId = $("#FeedbackId").val();  
+    var supplierId = $("#SupplierSelect").val();
+    var customerId = $("#CustomerSelect").val();
+    var comment = $("#Comment").val();
+  
+
+    var formData = new FormData();
+    
+    formData.append("SupplierId", supplierId);
+    formData.append("CustomerId", customerId);
+    formData.append("Comment", comment);
+    formData.append("FeedbackDate", new Date().toISOString());
+    formData.append("FeedbackId", feedbackId);
+
+    // Thêm dataType vào phương thức ajax
+    $.ajax({
+      url: "https://localhost:7252/api/CustomerFeedback/update",
+      type: "PUT",
+      data: formData,
+      processData: false,
+      contentType: false,
+      
+      success: function (data) {
+        alert(" update successful!");
+        window.location.href = "CustomerFeedbackad.html";
+      },
+      error: function (error) {
+        alert("Có lỗi xảy ra khi cập nhật thông tin.");
+        console.error("Error :", error);
+      }
+    });
+}
+  </script>
+ 
+</body>
+</html>

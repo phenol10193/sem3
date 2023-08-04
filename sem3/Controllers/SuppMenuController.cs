@@ -36,6 +36,7 @@ namespace sem3.Controllers
                                 Price = reader.GetFloat(reader.GetOrdinal("Price")),
                                 CategoryId = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                 SupplierId = reader.GetInt32(reader.GetOrdinal("SupplierId")),
+                                UrlImage = reader.GetString(reader.GetOrdinal("UrlImage"))
                                 Flag = reader.GetBoolean(reader.GetOrdinal("Flag"))
                             };
                             suppmenu.Add(suppMenu);
@@ -57,7 +58,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
             
-                var commandText = "INSERT INTO SuppMenu(ItemName, Price, CategoryId, SupplierId) VALUES  (@ItemName, @Price, @CategoryId, @SupplierId)";
+                var commandText = "INSERT INTO SuppMenu(ItemName, Price, CategoryId, SupplierId, UrlImage) VALUES  (@ItemName, @Price, @CategoryId, @SupplierId, @UrlImage)";
                 
                 using (var command =new SqlCommand(commandText,connection) )
                 {
@@ -103,7 +104,7 @@ namespace sem3.Controllers
             {
                 await connection.OpenAsync();
 
-                string query = "UPDATE SuppMenu SET ItemName = @ItemName, Price = @Price, CategoryId = @CategoryId, SupplierId = @SupplierId " +
+                string query = "UPDATE SuppMenu SET ItemName = @ItemName, Price = @Price, CategoryId = @CategoryId, SupplierId = @SupplierId, UrlImage =@UrlImage" +
                                 "WHERE MenuItemId = @MenuItemId";
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))
@@ -113,7 +114,26 @@ namespace sem3.Controllers
                     cmd.Parameters.AddWithValue("@CategoryId", SuppMenu.CategoryId);
                     cmd.Parameters.AddWithValue("@SupplierId", SuppMenu.SupplierId);
                     cmd.Parameters.AddWithValue("@MenuItemId", SuppMenu.MenuItemId);
-                   
+                    // Kiểm tra xem khách hàng có gửi file ảnh mới không
+                    if (SuppMenu.ImageFile != null && SuppMenu.ImageFile.Length > 0)
+                    if (SuppMenu.ImageFile != null && SuppMenu.ImageFile.Length > 0)
+                    {
+                        var fileName = Path.GetFileName(SuppMenu.ImageFile.FileName);
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
+                        var filePath = Path.Combine("uploads", uniqueFileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await SuppMenu.ImageFile.CopyToAsync(stream);
+                        }
+
+                        cmd.Parameters.AddWithValue("@UrlImage", filePath);
+                    }
+                    else
+                    {
+                        // Nếu không có ảnh mới được gửi, giữ nguyên ảnh cũ
+                        cmd.Parameters.AddWithValue("@UrlImage", SuppMenu.UrlImage);
+                    }
                     await cmd.ExecuteNonQueryAsync();
                 }
             }
